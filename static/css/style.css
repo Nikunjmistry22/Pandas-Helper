@@ -1,0 +1,124 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Header styles */
+.header {
+    display: flex;
+    align-items: center; /* Align vertically centered */
+    justify-content: space-between;
+    background-color: #333;
+    color: white;
+    padding: 10px;
+}
+
+.title {
+    padding-left: 10px;
+}
+
+/* Style for the navigation bar */
+nav {
+    margin-right: 10px;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: right; /* Align navigation to the right */
+}
+
+nav ul li {
+    display: inline-block;
+}
+
+nav ul li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+nav ul li a:hover {
+    background-color: #111;
+}
+
+/* Styles for the content area */
+.content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.file-upload {
+    margin-bottom: 20px;
+}
+
+.table-and-buttons {
+    display: flex;
+}
+
+.table-container {
+    max-width: 600px;
+    max-height: 525px;
+    border: 1px solid #ccc;
+    overflow: auto;
+    flex: 1;
+}
+.table-container table {
+    border-collapse: collapse;
+    width: 100%;
+
+}
+
+.table-container table tr {
+    border-bottom: 1px solid #ccc; /* Adds bottom border to each row */
+}
+
+.table-container table td {
+    border: 1px solid #ccc; /* Adds border to each cell */
+    padding: 8px;
+    empty-cells: show;
+}
+.modal {
+            display: none;
+        }
+
+.modal-body{
+max-height: 600px;
+max-weight: 1080px
+ overflow-y: auto;
+}
+.tab {
+    border: 1px solid #000; /* Add your desired border styles */
+    padding: 10px; /* Adjust padding for better appearance */
+    margin: 5px; /* Adjust margin for better spacing */
+    display: inline-block; /* Ensures the tabs appear horizontally */
+    cursor: pointer; /* Provides a cursor pointer when hovering over tabs */
+    border-radius: 5px; /* Optional: adds rounded corners */
+}
+ul.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Four columns */
+    list-style: none;
+    padding: 0;
+}
+
+
+ul.grid li {
+    padding: 5px;
+    cursor: pointer; /* Cursor set to pointer */
+    transition: background-color 0.3s ease; /* Smooth transition on hover for background color */
+}
+
+ul.grid li:hover {
+    background-color: #f0f0f0; /* Background color on hover */
+.Functions .head,
+.Functions .tail,
+.Functions .info,
+.Functions .describe  {
+  display: none;
+  }

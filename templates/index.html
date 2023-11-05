@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pandas Tool</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="header">
+        <div class="title">
+            <h1>Pandas Helper</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+               <li class="tab"  id="dataManipulation"><a href="#">Data Manipulation</a></li>
+                <li class="tab"  id="dataOutput">Data Output View</li>
+                 <li class="tab"  id="dataView">Data View</a></li>
+                 <li class="tab"  id="dataCleaning">Data Cleaning</li>
+                 <li class="tab"  id="Visualization">Visualization</li>
+
+
+
+
+                <!-- Add more links for other functionalities -->
+            </ul>
+        </nav>
+    </div>
+
+   <div class="container">
+        <div class="row">
+            <!-- Left Side - Upload and Display -->
+            <div class="col-md-6" style="margin-top: 20px;">
+                <div class="file-upload">
+                    <input type="file" id="fileInput" accept=".csv, .xlsx" />
+                    <button id="uploadFile">Upload</button>
+                    <button id="openTableInNewTab"><i class="fas fa-arrow-alt-circle-up"></i></button>
+                </div>
+                <div class="table-and-buttons">
+                    <div class="table-container" id="fileDisplayArea">
+                        <p id="loadingText">Uploaded file content will be displayed here.</p>
+                    </div>
+                </div>
+            </div>
+             <div class="col-md-6" style="padding-left: 40px">
+                <div class="Functions">
+                    <div class="toggle" id="head_main">
+                        <h1>Head Function</h1>
+                        <p>Shows the initial rows of a DataFrame or Series, aiding in a quick overview of the data structure.</p>
+                        <button id="head_button">head</button>
+                        <input id="head_value" placeholder="Optional default Value: 5">
+                    </div>
+                    <div class="toggle" id="tail_main">
+                        <h1>Tail Function</h1>
+                        <p>Shows the last rows of a DataFrame or Series, aiding in a quick overview of the data structure.</p>
+                        <button id="tail_button" >tail</button>
+                        <input id="tail_value" placeholder="Optional default Value: 5">
+                    </div>
+                    <div class="toggle" id="info_main">
+                        <h1>Info Function</h1>
+                        <p>It provides a compact summary of a DataFrame, displaying data types, non-null counts, and memory usage.</p>
+                        <button id="info_button" >Info</button>
+
+                    </div>
+                    <div class="toggle" id="dtypes_main">
+                        <h1>Dtypes Function</h1>
+                        <p>It provides data types of all the columns.</p>
+                        <button id="dtypes_button" >Data type of all columns</button>
+
+                    </div>
+                     <div class="toggle" id="describe_main">
+                        <h1>Describe Function</h1>
+                        <p>It provides a compact summary of a DataFrame, displaying data types, non-null counts, and memory usage.</p>
+                        <button id="describe_button" >Describe</button>
+
+                    </div>
+                    <div class="toggle" id="shape_main">
+                        <h1>Shape Function</h1>
+                        <p>It provides no of rows and columns in a tuple format.</p>
+                        <button id="shape_button" >Shape</button>
+
+                    </div>
+                    <div class="toggle" id="columns_main">
+                        <h1>Columns Function</h1>
+                        <p>It provides all columns names.</p>
+                        <button id="columns_button" >Show Columns</button>
+                    </div>
+
+                    <div class="toggle" id="sort_values_main">
+                        <h1>Sort Values Function</h1>
+                        <p>It provides the resulted dataframe either in ascending or descending.</p>
+                        <button id="sort_values_button" >Sort Values</button>
+                        <input id="by_value" placeholder="Enter the column name">
+                        <select id="sortOrderDropdown">
+                            <option value=1>Ascending</option>
+                            <option value=0>Descending</option>
+                        </select>
+                    </div>
+                    <div class="toggle" id="corr_main">
+                        <h1>Correlation Function</h1>
+                        <p>Calculates the pairwise correlation of columns in a DataFrame.</p>
+                        <label for="correlationMethod">Method of Correlation:</label>
+                        <select id="correlationMethod">
+                            <option value="pearson">Pearson</option>
+                            <option value="kendall">Kendall</option>
+                            <option value="spearman">Spearman</option>
+                        </select><br>
+                        <button id="corr_button">Correlation</button>
+                    </div>
+
+
+                    <div class="toggle" id="groupby_main">
+                        <h1>Group By Function</h1>
+                        <p>Groups the DataFrame using a mapper or by a Series of columns.</p>
+                        <label for="groupByColumn">Enter Column Name to Group By:</label>
+                        <input type="text" id="groupByColumn" placeholder="Enter column name">
+                        <label for="aggregationDropdown">Select Aggregation Function:</label>
+                        <select id="aggregationDropdown">
+                            <option value="max">Max</option>
+                            <option value="min">Min</option>
+                            <option value="avg">Avg</option>
+                            <option value="sum">Sum</option>
+                            <option value="count">Count</option>
+                        </select>
+                        <button id="groupBy_button">Group By</button>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dataOutputModal" tabindex="-1" role="dialog" aria-labelledby="dataOutputModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="dataOutputModalLabel">Data Output</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            <ul class="grid">
+                <li>pd.to_csv()</li>
+                <li>pd.to_excel()</li>
+                <li>pd.to_sql()</li>
+                <li>pd.to_json()</li>
+                <li>pd.to_html()</li>
+                <li>pd.to_clipboard()</li>
+                <li>pd.to_pickle()</li>
+                <li>pd.to_feather()</li>
+                <li>pd.to_parquet()</li>
+                <li>pd.to_gbq()</li>
+                <li>pd.to_stata()</li>
+                <li>pd.to_sql()</li>
+                <li>pd.to_hdf()</li>
+            </ul>
+                    </div>
+        </div>
+    </div>
+    </div>
+    <div class="modal fade" id="dataManipulationModal" tabindex="-1" role="dialog" aria-labelledby="dataManipulationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="dataManipulationModalLabel">Data Manipulation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+<ul class="grid">
+                <li>set_index()</li>
+        <li>reset_index()</li>
+        <li>drop()</li>
+        <li>rename()</li>
+        <li>astype()</li>
+        <li>loc[]</li>
+        <li>iloc[]</li>
+        <li>where()</li>
+        <li>mask()</li>
+        <li>query()</li>
+        <li>apply()</li>
+        <li>map()</li>
+        <li>merge()</li>
+        <li>concat()</li>
+        <li>append()</li>
+        <li>melt()</li>
+        <li>pivot()</li>
+        <li>stack()</li>
+        <li>unstack()</li>
+        <li>cut()</li>
+        <li>qcut()</li>
+</ul>
+
+                    </div>
+        </div>
+    </div>
+</div>
+
+    <div class="modal fade" id="dataViewModal" tabindex="-1" role="dialog" aria-labelledby="dataViewModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="dataViewModalLabel">Data View</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul class="grid">
+                    <li id="func_head">head()</li>
+                    <li id="func_tail">tail()</li>
+                    <li id="func_info">info()</li>
+                    <li id="func_describe">describe()</li>
+                    <li id="func_dtypes">dtypes</li>
+                    <li id="func_columns">columns</li>
+                    <li id="func_shape">shape</li>
+                    <li>value_counts()</li>
+                    <li id="func_groupby">groupby()</li>
+                    <li id="func_sort_values">sort_values()</li>
+                    <li id="func_corr">corr()</li>
+                    <li>pivot_table()</li>
+    </ul>
+                </ul>
+                    </div>
+        </div>
+    </div>
+</div>
+       <div class="modal fade" id="dataCleaningModal" tabindex="-1" role="dialog" aria-labelledby="dataCleaningModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="dataCleaningModalLabel">Data Cleaning</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                 <ul class="grid">
+                     <li id="func_drop">drop()</li>
+                    <li>drop_duplicates()</li>
+                    <li>duplicated()</li>
+                    <li>replace()</li>
+                     <li id="func_isna">isna()</li>
+                    <li id="func_fillna">fillna()</li>
+                    <li id="func_dropna">dropna()</li>
+                    <li>ffill()</li>
+                    <li>bfill()</li>
+                    <li>interpolate()</li>
+                    <li>reindex()</li>
+    </ul>
+                    </div>
+        </div>
+    </div>
+</div>
+    <div class="modal fade" id="dataVisualizationModal" tabindex="-1" role="dialog" aria-labelledby="dataVisualizationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="dataVisualizationModalLabel">Data Visualization</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                 <ul class="grid">
+        <li>plot()</li>
+        <li>hist()</li>
+        <li>boxplot()</li>
+        <li>scatter()</li>
+        <li>bar()</li>
+        <li>pie()</li>
+    </ul>
+                    </div>
+        </div>
+    </div>
+</div>
+
+
+    <footer class="fixed-bottom bg-light text-center py-3">
+        &copy; 2023 Nikunj Mistry
+    </footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/DataView.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/DataCleaning.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.0/xlsx.full.min.js"></script>
+
+</body>
+</html>
