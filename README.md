@@ -32,7 +32,7 @@ This web tool aims to assist beginners by guiding them through step-by-step prob
 3. **Running the app**
    ```bash
     # Run the Flask application
-    python app.py
+    python app_main.py
    ```
 4. **Usage**
 
