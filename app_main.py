@@ -189,15 +189,20 @@ def group_by_column():
         else:
             new_df = df.copy()  # Create a copy of the original DataFrame
             if aggregation == 'max':
-                return new_df.groupby(column).max().to_html()
+                df= new_df.groupby(column).max()
+                return df.to_html()
             elif aggregation == 'min':
-                return new_df.groupby(column).min().to_html()
+                df= new_df.groupby(column).min()
+                return df.to_html()
             elif aggregation == 'sum':
-                return new_df.groupby(column).sum().to_html()
+                df= new_df.groupby(column).sum()
+                return df.to_html()
             elif aggregation == 'avg':
-                return new_df.groupby(column).mean().to_html()
+                df= new_df.groupby(column).mean()
+                return df.to_html()
             elif aggregation == 'count':
-                return new_df.groupby(column).size().to_frame('Count').to_html()
+                df= new_df.groupby(column).size().to_frame('Count')
+                return df.to_html()
             else:
                 return 'Invalid Aggregation Method'
     except Exception as e:
