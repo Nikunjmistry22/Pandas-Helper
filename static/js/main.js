@@ -1,3 +1,6 @@
+ function refreshPage() {
+            location.reload(); // Reloads the current page
+        }
 document.getElementById('fileInput').addEventListener('change', function() {
     const file = this.files[0];
     const fileDisplayArea = document.getElementById('fileDisplayArea');

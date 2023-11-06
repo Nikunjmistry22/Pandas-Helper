@@ -27,6 +27,18 @@ def upload_file():
     # Example: file.save('uploads/' + file.filename)
     return 'File uploaded successfully and converted in Dataframe'
 
+@app.route('/show')
+def show():
+    global df,new_df
+    try:
+        if df is not None:
+            df=new_df
+            return df.to_html()
+        else:
+            return 'No DataFrame available.'
+    except ValueError:
+        return 'Invalid head value.'
+
 @app.route('/show_head')
 def show_head():
     global df
@@ -211,6 +223,119 @@ def group_by_column():
 
 #=========================== Data Cleaning Endpoints======================================
 
+@app.route('/show_isna')
+def show_isna():
+    global df,new_df
+    try:
+        if df is not None:
+            return df.isna().sum().reset_index().to_html()
+
+        else:
+            return 'No DataFrame available.'
+    except ValueError:
+        return 'Invalid head value.'
+
+@app.route('/show_fillna')
+def show_fillna():
+    global df,new_df
+    target_column = request.args.get('target_column')  # Get the value of 'target_column'
+    target_column_value = request.args.get('target_column_value')  # Get the value of 'target_column_value'
+    try:
+        if df is not None and target_column in df.columns:
+            # Modify the specified column with the filled values
+            df[target_column] = df[target_column].fillna(value=target_column_value)
+            return df.to_html()
+        else:
+            return 'No DataFrame available.'
+    except Exception as e:
+        return 'Error: ' + str(e)
+
+
+@app.route('/show_ffill')
+def show_ffill():
+    global df,new_df
+    target_column = request.args.get('target_column')  # Get the value of 'target_column'
+    # target_column_value = request.args.get('target_column_value')  # Get the value of 'target_column_value'
+    try:
+        if df is not None and target_column in df.columns:
+            # Modify the specified column with the filled values
+            df[target_column] = df[target_column].fillna(method='ffill')
+            return df.to_html()
+        else:
+            return 'No DataFrame available.'
+    except Exception as e:
+        return 'Error: ' + str(e)
+
+
+@app.route('/show_bfill')
+def show_bfill():
+    global df,new_df
+    target_column = request.args.get('target_column')  # Get the value of 'target_column'
+    # target_column_value = request.args.get('target_column_value')  # Get the value of 'target_column_value'
+    try:
+        if df is not None and target_column in df.columns:
+            # Modify the specified column with the filled values
+            df[target_column] = df[target_column].fillna(method='bfill')
+            return df.to_html()
+        else:
+            return 'No DataFrame available.'
+    except Exception as e:
+        return 'Error: ' + str(e)
+
+
+@app.route('/dropna')
+def dropna():
+    global df,new_df
+
+    criteria = request.args.get('criteria')
+
+    try:
+        if df is not None:
+            if criteria.startswith('how_row'):
+                how_value = request.args.get('how')
+                if how_value == 'any':
+                    df = df.dropna(how='any')
+                elif how_value == 'all':
+                    df = df.dropna(how='all')
+                else:
+                    return 'Invalid how value'
+
+                return df.to_html()
+            elif criteria.startswith('how_col'):
+                how_value = request.args.get('how')
+                if how_value == 'any':
+                    df = df.dropna(axis=1,how='any')
+                elif how_value == 'all':
+                    df = df.dropna(axis=1,how='all')
+                else:
+                    return 'Invalid how value'
+
+                return df.to_html()
+
+            elif criteria.startswith('thresh_row'):
+                thresh_value = request.args.get('thresh')
+                if thresh_value:
+                    thresh_value = int(thresh_value)  # Assuming the threshold is an integer
+                    df = df.dropna(thresh=thresh_value)
+                else:
+                    return 'Threshold value not provided'
+
+                return df.to_html()
+            elif criteria.startswith('thresh_col'):
+                thresh_value = request.args.get('thresh')
+                if thresh_value:
+                    thresh_value = int(thresh_value)  # Assuming the threshold is an integer
+                    df = df.dropna(axis=1,thresh=thresh_value)
+                else:
+                    return 'Threshold value not provided'
+
+                return df.to_html()
+            else:
+                return 'Invalid criteria'
+        else:
+            return 'No DataFrame available.'
+    except Exception as e:
+        return 'Error: ' + str(e)
 
 if __name__ == '__main__':
     app.run(debug=True)

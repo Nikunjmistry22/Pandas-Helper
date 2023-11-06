@@ -13,7 +13,7 @@
         </div>
         <nav>
             <ul>
-                <li><a href="/">Home</a></li>
+                <li><a href="javascript:void(0);" onclick="refreshPage()">Home</a></li>
                <li class="tab"  id="dataManipulation"><a href="#">Data Manipulation</a></li>
                 <li class="tab"  id="dataOutput">Data Output View</li>
                  <li class="tab"  id="dataView">Data View</a></li>
@@ -44,7 +44,12 @@
                 </div>
             </div>
              <div class="col-md-6" style="padding-left: 40px">
-                <div class="Functions">
+                <div class="Functions" style="margin-top: 150px; padding-left: 50px">
+                    <div class="toggle" id="show_main">
+                        <h1>Show Entire Data Frame</h1>
+                        <button id="show_button">Show</button>
+
+                    </div>
                     <div class="toggle" id="head_main">
                         <h1>Head Function</h1>
                         <p>Shows the initial rows of a DataFrame or Series, aiding in a quick overview of the data structure.</p>
@@ -124,6 +129,54 @@
                             <option value="count">Count</option>
                         </select>
                         <button id="groupBy_button">Group By</button>
+                    </div>
+                    <!--  Data Cleaning Functionality-->
+                    <div class="toggle" id="isna_main">
+                        <h1>IsNa Report</h1>
+                        <p>It provides the count of all NA in all columns.</p>
+                        <button id="isna_button" >Show IsNa Counts</button>
+                    </div>
+                    <div class="toggle" id="fillna_main">
+                        <h1>Fill NA Function</h1>
+                        <p>It fills the null values with a text given from the users.</p>
+                        <input id="target_column" placeholder="Mention the col name">
+                        <input id="target_column_value" placeholder="Write the Alpha/Num Text.">
+                        <button id="fillna_button" >Fill NA</button>
+                    </div>
+                    <div class="toggle" id="ffill_main">
+                        <h1>FFill Method</h1>
+                        <p>FFILL</p>
+                        <input id="f_target_column" placeholder="Mention the col name">
+                        <button id="ffill_button" >FFill</button>
+                    </div>
+                    <div class="toggle" id="bfill_main">
+                        <h1>BFill Method</h1>
+                        <p>It fills the null values with a text given from the users.</p>
+                        <input id="b_target_column" placeholder="Mention the col name">
+                        <button id="bfill_button" >Fill NA</button>
+                    </div>
+                    <div class="toggle" id="dropna_main">
+                        <h1>Drop NaN Values</h1>
+                        <p>Removes missing (NaN) values from the DataFrame or Series.</p>
+                        <label for="dropna_criteria">Choose the criteria:</label>
+                        <select id="dropna_criteria">
+                            <option value="how_row">Drop Rows based on how</option>
+                            <option value="how_column">Drop Columns based on how</option>
+                            <option value="thresh_row">Specify Minimum non-NaN Rows</option>
+                            <option value="thresh_column">Specify Minimum non-NaN Columns</option>
+                        </select>
+                        <div id="how_options" style="display: none;">
+                            <label for="dropna_how">Choose how to drop:</label>
+                            <select id="dropna_how">
+                                <option value="any">Drop if any NaN</option>
+                                <option value="all">Drop if all NaN</option>
+                            </select>
+                        </div>
+                        <div id="thresh_options" style="display: none;">
+                            <label for="dropna_thresh">Minimum non-NaN values:</label>
+                            <input id="dropna_thresh" placeholder="Enter minimum non-NaN count">
+                        </div>
+                        <button id="dropna_button">dropna</button>
                     </div>
 
 
@@ -212,6 +265,7 @@
             </div>
             <div class="modal-body">
                 <ul class="grid">
+                    <li id="func_show">Show</li>
                     <li id="func_head">head()</li>
                     <li id="func_tail">tail()</li>
                     <li id="func_info">info()</li>
@@ -245,12 +299,11 @@
                      <li id="func_drop">drop()</li>
                     <li>drop_duplicates()</li>
                     <li>duplicated()</li>
-                    <li>replace()</li>
                      <li id="func_isna">isna()</li>
                     <li id="func_fillna">fillna()</li>
                     <li id="func_dropna">dropna()</li>
-                    <li>ffill()</li>
-                    <li>bfill()</li>
+                    <li id="func_ffill">ffill()</li>
+                    <li id="func_bfill">bfill()</li>
                     <li>interpolate()</li>
                     <li>reindex()</li>
     </ul>

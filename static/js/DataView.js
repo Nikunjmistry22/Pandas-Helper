@@ -1,6 +1,11 @@
 
     $(document).ready(function () {
         $('.toggle').hide();
+        $('#func_show').on('click', function () {
+            $('.toggle').hide();
+            $('#show_main').toggle();
+            $('#dataViewModal').modal('hide');
+        });
         $('#func_head').on('click', function () {
             $('.toggle').hide();
             $('#head_main').toggle();
@@ -58,6 +63,26 @@
                 });
     });
 
+
+document.getElementById('show_button').addEventListener('click', function() {
+    const url = '/show'
+    fetch(url)
+    .then(response => {
+        if (response.ok) {
+            return response.text();  // Ensure the response is treated as text
+        } else {
+            throw new Error('Failed to fetch DataFrame head.');
+        }
+    })
+    .then(data => {
+        document.getElementById('fileDisplayArea').innerHTML = data;
+        // Display the DataFrame head data as needed
+    })
+    .catch(error => {
+        console.error('DataFrame head fetch error:', error.message);
+        alert('Error!!! DataFrame head fetch error');
+    });
+});
 
 document.getElementById('head_button').addEventListener('click', function() {
        const headValue = document.getElementById('head_value').value; // Get the value from the input box
