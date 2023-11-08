@@ -12,6 +12,12 @@ This web tool aims to assist beginners by guiding them through step-by-step prob
 - **Step-by-Step Problem Solving:** Guided steps to perform various Pandas functions, addressing common data manipulation tasks.
 - **Interactive Input Specifications:** Enable users to specify parameters for various Pandas operations directly through the interface.
 - **Visualizing Solutions:** Showcase the effects of Pandas operations through visual representations and data previews.
+- **Logging and Code Display**: Track and log the actions initiated by each button, displaying the corresponding code or operation used, offering users insight into when and where to employ specific operations for their data manipulation tasks.
+
+
+
+
+
 
 ## Getting Started
 
