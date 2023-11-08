@@ -165,3 +165,34 @@ document.getElementById('uploadFile').addEventListener('click', function() {
         alert('Please select a file to upload.');
     }
 });
+
+$(document).ready(function () {
+        $('.toggle').hide();
+       $('#logging').hide();
+         $('#Logs').on('click', function () {
+            $('.toggle').hide();
+            $('#logging').toggle();
+
+        });
+  });
+
+
+document.getElementById('show_logs_button').addEventListener('click', function() {
+    const url = `/logs`;
+    fetch(url)
+    .then(response => {
+        if (response.ok) {
+            return response.text();  // Ensure the response is treated as text
+        } else {
+            throw new Error('Failed to fetch DataFrame head.');
+        }
+    })
+    .then(data => {
+        document.getElementById('logsTextArea').innerHTML = data;
+        // Display the DataFrame head data as needed
+    })
+    .catch(error => {
+        console.error('DataFrame head fetch error:', error.message);
+        alert('Error: ',error.message);
+    });
+});

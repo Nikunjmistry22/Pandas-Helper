@@ -3,14 +3,14 @@ import pandas as pd
 import openpyxl
 from io import StringIO
 app = Flask(__name__)
-
+logs=''
 @app.route('/')
 def index():
     return render_template('index.html')
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
-    global df
+    global df,original,logs
     global new_df
     if 'file' not in request.files:
         return 'No file part', 400
@@ -19,29 +19,54 @@ def upload_file():
         return 'No selected file', 400
     else:
         if file.filename.endswith('.csv'):
+            logs += f"Uploaded file: {file.filename}\ndf = pd.read_csv('{file.filename}')\n"
             df=pd.read_csv(file)
         elif file.filename.endswith('.xlsx'):
             df = pd.read_excel(file)
+    original=df.copy()
 
     # Process the uploaded file here, save it, and return an appropriate response
     # Example: file.save('uploads/' + file.filename)
     return 'File uploaded successfully and converted in Dataframe'
 
+@app.route('/show_original')
+def show_original():
+    global original
+    try:
+        if original is not None:
+
+            return original.to_html()
+        else:
+            return 'No original DataFrame available.'
+    except Exception as e:
+        return 'Error: ' + str(e)
+
 @app.route('/show')
 def show():
     global df,new_df
-    try:
-        if df is not None:
-            df=new_df
-            return df.to_html()
+    # try:
+    #     if df is not None:
+    #         df=new_df
+    #         return df.to_html()
+    #     else:
+    #         return 'No DataFrame available.'
+    # except ValueError:
+    #     return 'Invalid head value.'
+    columns = request.args.get('column_values')
+    if df is not None:
+        if columns:
+            columns_list = columns.split(',')
+            df = df[columns_list]
+            return new_df.to_html()
         else:
-            return 'No DataFrame available.'
-    except ValueError:
-        return 'Invalid head value.'
+            return df.to_html()
+    else:
+        return 'No DataFrame available.'
+
 
 @app.route('/show_head')
 def show_head():
-    global df
+    global df,logs
     global new_df
     head_value = request.args.get('head_value')  # Get the 'head_value' from the query parameters
     try:
@@ -49,10 +74,12 @@ def show_head():
             if head_value:
                 new_df=df.head(int(head_value))
                 df=new_df
+                logs += f"df = df.head({head_value})\n"
                 return df.head(int(head_value)).to_html()
             else:
                 new_df=df.head()
                 df=new_df
+                logs += f"df = df.head()\n"
                 return df.head().to_html()
         else:
             return 'No DataFrame available.'
@@ -61,17 +88,19 @@ def show_head():
 
 @app.route('/show_tail')
 def show_tail():
-    global df
+    global df,logs
     tail_value = request.args.get('tail_value')  # Get the 'head_value' from the query parameters
     try:
         if df is not None:
             if tail_value:
                 new_df = df.tail(int(tail_value))
                 df = new_df
+                logs += f"df = df.tail({tail_value})\n"
                 return df.tail(int(tail_value)).to_html()
             else:
                 new_df = df.tail()
                 df = new_df
+                logs += f"df = df.tail()\n"
                 return df.tail().to_html()
         else:
             return 'No DataFrame available.'
@@ -80,12 +109,13 @@ def show_tail():
 
 @app.route('/show_info')
 def show_info():
-    global df
+    global df,logs
     try:
         if df is not None:
             buffer = StringIO()
 
             df.info(buf=buffer)
+            logs += f"df.info()\n"
             return buffer.getvalue()
         else:
             return 'No DataFrame available.'
@@ -95,9 +125,10 @@ def show_info():
 
 @app.route('/show_dtypes')
 def show_dtypes():
-    global df
+    global df,logs
     try:
         if df is not None:
+            logs += f"df.dtypes\n"
             return df.dtypes.to_string()
         else:
             return 'No DataFrame available.'
@@ -107,10 +138,11 @@ def show_dtypes():
 
 @app.route('/show_describe')
 def show_describe():
-    global df,new_df
+    global df,new_df,logs
     try:
         if df is not None:
             new_df=df
+            logs += f"df.describe()\n"
             return new_df.describe().to_html()
 
         else:
@@ -120,7 +152,7 @@ def show_describe():
 
 @app.route('/show_shape')
 def show_shape():
-    global df,new_df
+    global df,new_df,logs
     try:
         if df is not None:
             buffer = StringIO()  # Creating a StringIO buffer
@@ -128,7 +160,7 @@ def show_shape():
             new_df=df
             new_df_shape = new_df.shape
             buffer.write(str(new_df_shape))
-
+            logs += f"df.shape\n"
             return buffer.getvalue()
         else:
             return 'No DataFrame available.'
@@ -137,7 +169,7 @@ def show_shape():
 
 @app.route('/show_columns')
 def show_columns():
-    global df
+    global df,logs
     try:
         if df is not None:
             buffer = StringIO()  # Creating a StringIO buffer
@@ -145,7 +177,7 @@ def show_columns():
             # Getting the shape of the DataFrame and storing it in the buffer
             df_columns = df.columns.tolist()
             buffer.write(str(df_columns))
-
+            logs += f"df.columns\n"
             return buffer.getvalue()
         else:
             return 'No DataFrame available.'
@@ -337,5 +369,39 @@ def dropna():
     except Exception as e:
         return 'Error: ' + str(e)
 
+@app.route('/drop', methods=['GET'])
+def drop():
+    global df
+
+    drop_type = request.args.get('drop_type')
+
+    if df is not None:
+        try:
+            if drop_type == 'row':
+                row_numbers = request.args.get('row_numbers').split(',')
+                for row_number in row_numbers:
+                    if row_number:
+                        df.drop(df.index[int(row_number)], inplace=True)
+                return df.to_html()
+
+            elif drop_type == 'column':
+                column_names = request.args.get('column_names').split(',')
+                for column_name in column_names:
+                    if column_name in df.columns:
+                        df.drop(column_name, axis=1, inplace=True)
+                return df.to_html()
+
+            else:
+                return 'Invalid drop type'
+
+        except Exception as e:
+            return 'Error: ' + str(e)
+
+    else:
+        return 'No DataFrame available'
+
+@app.route('/logs')
+def show_logs():
+    return logs
 if __name__ == '__main__':
     app.run(debug=True)

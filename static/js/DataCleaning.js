@@ -3,27 +3,33 @@
         $('.toggle').hide();
         $('#func_isna').on('click', function () {
             $('.toggle').hide();
+$('#logging').hide();
             $('#isna_main').toggle();
             $('#dataCleaningModal').modal('hide');
         });
         $('#func_fillna').on('click', function () {
-            $('.toggle').hide();
+            $('.toggle').hide();$('#logging').hide();
             $('#fillna_main').toggle();
             $('#dataCleaningModal').modal('hide');
         });
         $('#func_ffill').on('click', function () {
-            $('.toggle').hide();
+            $('.toggle').hide();$('#logging').hide();
             $('#ffill_main').toggle();
             $('#dataCleaningModal').modal('hide');
         });
         $('#func_bfill').on('click', function () {
-            $('.toggle').hide();
+            $('.toggle').hide();$('#logging').hide();
             $('#bfill_main').toggle();
             $('#dataCleaningModal').modal('hide');
         });
         $('#func_dropna').on('click', function () {
-            $('.toggle').hide();
+            $('.toggle').hide();$('#logging').hide();
             $('#dropna_main').toggle();
+            $('#dataCleaningModal').modal('hide');
+        });
+        $('#func_drop').on('click', function () {
+            $('.toggle').hide();$('#logging').hide();
+            $('#drop_main').toggle();
             $('#dataCleaningModal').modal('hide');
         });
     });
@@ -187,4 +193,51 @@ function performDropnaFetch(url) {
         console.error('DataFrame dropna fetch error:', error.message);
         alert('Error!!! DataFrame dropna fetch error');
     });
+}
+
+function performDrop() {
+    const dropType = document.getElementById('drop_type').value;
+
+    if (dropType === 'row') {
+        const rowNumbers = document.getElementById('row_number').value.split(',');
+        const url = '/drop?drop_type=row&row_numbers=' + rowNumbers;
+        performDropFetch(url);
+    } else if (dropType === 'column') {
+        const columnNames = document.getElementById('column_name').value.split(',');
+        const url = '/drop?drop_type=column&column_names=' + columnNames;
+        performDropFetch(url);
+    }
+}
+
+// Event listeners for dropdown change and button click
+document.getElementById('drop_type').addEventListener('change', function () {
+    const selectedValue = document.getElementById('drop_type').value;
+    if (selectedValue === 'row') {
+        document.getElementById('drop_row_number').style.display = 'block';
+        document.getElementById('drop_column_name').style.display = 'none';
+    } else if (selectedValue === 'column') {
+        document.getElementById('drop_column_name').style.display = 'block';
+        document.getElementById('drop_row_number').style.display = 'none';
+    }
+});
+
+document.getElementById('drop_button').addEventListener('click', performDrop);
+
+function performDropFetch(url) {
+    fetch(url)
+        .then(response => {
+            if (response.ok) {
+                return response.text();
+            } else {
+                throw new Error('Failed to fetch DataFrame drop action.');
+            }
+        })
+        .then(data => {
+            document.getElementById('fileDisplayArea').innerHTML = data;
+            // Display the DataFrame drop data as needed
+        })
+        .catch(error => {
+            console.error('DataFrame drop fetch error:', error.message);
+            alert('Error!!! DataFrame drop fetch error');
+        });
 }

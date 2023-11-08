@@ -19,7 +19,7 @@
                  <li class="tab"  id="dataView">Data View</a></li>
                  <li class="tab"  id="dataCleaning">Data Cleaning</li>
                  <li class="tab"  id="Visualization">Visualization</li>
-
+                <li class="tab" id="Logs">Logging</li>
 
 
 
@@ -44,10 +44,25 @@
                 </div>
             </div>
              <div class="col-md-6" style="padding-left: 40px">
+                <div id="logging">
+                    <h1>Logs of all actions.</h1>
+                    <button id="show_logs_button">Show Logs</button><br><br>
+                    <div id="loggs">
+                        <textarea id="logsTextArea" rows="10" cols="50"></textarea>
+                    </div>
+                </div>
                 <div class="Functions" style="margin-top: 150px; padding-left: 50px">
+                   <div class="toggle" id="show_original_main">
+                        <h1>Show Original Data Frame</h1>
+                        <button id="show_original_button">Show Original DataFrame</button>
+
+                    </div>
                     <div class="toggle" id="show_main">
                         <h1>Show Entire Data Frame</h1>
-                        <button id="show_button">Show</button>
+                        <button id="show_button">Show Current DataFrame</button><br><br>
+                        <span>Enter those columns to get visible in dataframe</span>
+                        <input id="columns_name" placeholder="Optional">
+                        <p>For multiple columns_names, use a comma between columns(e.g., col1,col2,col3)</p>
 
                     </div>
                     <div class="toggle" id="head_main">
@@ -178,6 +193,26 @@
                         </div>
                         <button id="dropna_button">dropna</button>
                     </div>
+                     <div class="toggle" id="drop_main">
+                        <h1>Drop Rows or Columns</h1>
+                        <p>Delete rows or columns from the DataFrame based on the selection.</p>
+                        <label for="drop_type">Choose what to drop:</label>
+                        <select id="drop_type">
+                            <option value="row">Rows</option>
+                            <option value="column">Columns</option>
+                        </select>
+                        <div id="drop_column_name" style="display: none;">
+                            <label for="column_name">Enter Column Name(s):</label>
+                            <input id="column_name" placeholder="Enter column names (comma-separated)">
+                            <p>For multiple columns, use a comma between column names (e.g., col1, col2)</p>
+                        </div>
+                        <div id="drop_row_number" style="display: none;">
+                            <label for="row_number">Enter Row Number(s):</label>
+                            <input id="row_number" placeholder="Enter row numbers (comma-separated)">
+                            <p>For multiple rows, use a comma between row numbers (e.g., 1, 2, 3)</p>
+                        </div>
+                        <button id="drop_button">Drop</button>
+                    </div>
 
 
 
@@ -265,7 +300,9 @@
             </div>
             <div class="modal-body">
                 <ul class="grid">
-                    <li id="func_show">Show</li>
+
+                    <li id="func_show_original">Show Original</li>
+                    <li id="func_show">Show Current</li>
                     <li id="func_head">head()</li>
                     <li id="func_tail">tail()</li>
                     <li id="func_info">info()</li>
