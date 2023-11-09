@@ -245,8 +245,11 @@ def group_by_column():
                 df= new_df.groupby(column).mean()
                 return df.to_html()
             elif aggregation == 'count':
-                df= new_df.groupby(column).size().to_frame('Count')
+                df = new_df.groupby(column).size().reset_index(name='count')
+                # df = df[df['count'] == df['count'].max()]
+                df.columns = [column, 'count']
                 return df.to_html()
+               
             else:
                 return 'Invalid Aggregation Method'
     except Exception as e:
