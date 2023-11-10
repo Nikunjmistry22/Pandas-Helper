@@ -3,33 +3,56 @@
         $('.toggle').hide();
         $('#func_isna').on('click', function () {
             $('.toggle').hide();
+            $('#tagLine').hide();
 $('#logging').hide();
             $('#isna_main').toggle();
             $('#dataCleaningModal').modal('hide');
         });
         $('#func_fillna').on('click', function () {
+        $('#tagLine').hide();
             $('.toggle').hide();$('#logging').hide();
             $('#fillna_main').toggle();
             $('#dataCleaningModal').modal('hide');
         });
         $('#func_ffill').on('click', function () {
+        $('#tagLine').hide();
             $('.toggle').hide();$('#logging').hide();
             $('#ffill_main').toggle();
             $('#dataCleaningModal').modal('hide');
         });
         $('#func_bfill').on('click', function () {
+        $('#tagLine').hide();
             $('.toggle').hide();$('#logging').hide();
             $('#bfill_main').toggle();
             $('#dataCleaningModal').modal('hide');
         });
         $('#func_dropna').on('click', function () {
             $('.toggle').hide();$('#logging').hide();
+            $('#tagLine').hide();
             $('#dropna_main').toggle();
             $('#dataCleaningModal').modal('hide');
         });
         $('#func_drop').on('click', function () {
             $('.toggle').hide();$('#logging').hide();
+            $('#tagLine').hide();
             $('#drop_main').toggle();
+            $('#dataCleaningModal').modal('hide');
+        });
+        $('#func_drop_duplicates').on('click', function () {
+            $('.toggle').hide();$('#logging').hide();
+            $('#drop_duplicates_main').toggle();
+            $('#dataCleaningModal').modal('hide');
+        });
+        $('#func_duplicates').on('click', function () {
+            $('.toggle').hide();$('#logging').hide();
+            $('#tagLine').hide();
+            $('#duplicates_main').toggle();
+            $('#dataCleaningModal').modal('hide');
+        });
+        $('#func_resetindex').on('click', function () {
+            $('.toggle').hide();$('#logging').hide();
+            $('#tagLine').hide();
+            $('#resetindex_main').toggle();
             $('#dataCleaningModal').modal('hide');
         });
     });
@@ -241,3 +264,67 @@ function performDropFetch(url) {
             alert('Error!!! DataFrame drop fetch error');
         });
 }
+
+
+document.getElementById('drop_duplicates_button').addEventListener('click', function() {
+    const parameters = document.getElementById('ddParameters').value;
+    const url = `/show_drop_duplicates?parameters=${parameters}`;
+    fetch(url)
+    .then(response => {
+        if (response.ok) {
+            return response.text();  // Ensure the response is treated as text
+        } else {
+            throw new Error('Failed to fetch DataFrame head.');
+        }
+    })
+    .then(data => {
+        document.getElementById('fileDisplayArea').innerHTML = data;
+        // Display the DataFrame head data as needed
+    })
+    .catch(error => {
+        console.error('DataFrame head fetch error:', error.message);
+        alert('Error!',error.message);
+    });
+});
+
+
+document.getElementById('duplicates_button').addEventListener('click', function() {
+    const url = `/show_duplicates`;
+    fetch(url)
+    .then(response => {
+        if (response.ok) {
+            return response.text();  // Ensure the response is treated as text
+        } else {
+            throw new Error('Failed to fetch DataFrame head.');
+        }
+    })
+    .then(data => {
+        document.getElementById('fileDisplayArea').innerHTML = data;
+        // Display the DataFrame head data as needed
+    })
+    .catch(error => {
+        console.error('DataFrame head fetch error:', error.message);
+        alert('Error!',error.message);
+    });
+});
+
+
+document.getElementById('resetindex_button').addEventListener('click', function() {
+    const url = `/show_resetindex`;
+    fetch(url)
+    .then(response => {
+        if (response.ok) {
+            return response.text();  // Ensure the response is treated as text
+        } else {
+            throw new Error('Failed to fetch DataFrame head.');
+        }
+    })
+    .then(data => {
+        document.getElementById('fileDisplayArea').innerHTML = data;
+        // Display the DataFrame head data as needed
+    })
+    .catch(error => {
+        console.error('DataFrame head fetch error:', error.message);
+        alert('Error!',error.message);
+    });
+});

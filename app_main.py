@@ -1,8 +1,12 @@
-from flask import Flask, render_template,request
+from flask import Flask, render_template,request,jsonify
 import pandas as pd
-import openpyxl
+import openpyxl,secrets
 from io import StringIO
 app = Flask(__name__)
+
+secret_key = secrets.token_urlsafe(16)
+# Set the secret key for the Flask app
+app.config['SECRET_KEY'] = secret_key
 logs=''
 @app.route('/')
 def index():
@@ -249,7 +253,7 @@ def group_by_column():
                 # df = df[df['count'] == df['count'].max()]
                 df.columns = [column, 'count']
                 return df.to_html()
-               
+
             else:
                 return 'Invalid Aggregation Method'
     except Exception as e:
@@ -402,6 +406,60 @@ def drop():
 
     else:
         return 'No DataFrame available'
+
+
+@app.route('/show_drop_duplicates')
+def show_drop_duplicates():
+    global df
+    parameters = request.args.get('parameters')
+    try:
+        if df is not None:
+            if parameters == 'first':
+                df = df.drop_duplicates(keep='first')
+            elif parameters == 'last':
+                df=df.drop_duplicates(keep='last')
+            else:
+                return 'Invalid method'
+
+            return df.to_html()
+        else:
+            return 'No DataFrame available.'
+    except Exception as e:
+        return 'Error: ' + str(e)
+
+
+@app.route('/show_duplicates')
+def show_duplicates():
+    global df
+    try:
+        if df is not None:
+            duplicates = df[df.duplicated(keep=False)]
+            if not duplicates.empty:
+                duplicate_indices = duplicates.index.tolist()
+                return jsonify({'duplicates': duplicates.to_dict(orient='index')})
+            else:
+                return 'No duplicates found.'
+        else:
+            return 'No DataFrame available.'
+    except pd.errors.EmptyDataError:
+        return 'DataFrame is empty.'
+    except Exception as e:
+        return 'Error: ' + str(e)
+
+
+@app.route('/show_resetindex')
+def show_reset_index():
+    global df
+    try:
+        if df is not None:
+            df=df.reset_index(drop=True)
+            return df.to_html()
+        else:
+            return 'No DataFrame available.'
+    except pd.errors.EmptyDataError:
+        return 'DataFrame is empty.'
+    except Exception as e:
+        return 'Error: ' + str(e)
 
 @app.route('/logs')
 def show_logs():

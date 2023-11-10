@@ -169,9 +169,18 @@ document.getElementById('uploadFile').addEventListener('click', function() {
 $(document).ready(function () {
         $('.toggle').hide();
        $('#logging').hide();
+       $('#downloads').hide();
          $('#Logs').on('click', function () {
-            $('.toggle').hide();
+            $('.toggle').hide();$('#tagLine').hide();
             $('#logging').toggle();
+            $('#downloads').hide();
+
+        });
+
+         $('#download').on('click', function () {
+            $('.toggle').hide();$('#tagLine').hide();
+            $('#logging').hide();
+            $('#downloads').toggle();
 
         });
   });

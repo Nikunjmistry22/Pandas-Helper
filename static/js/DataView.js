@@ -3,70 +3,79 @@
         $('.toggle').hide();
          $('#func_show_original').on('click', function () {
             $('.toggle').hide();
+            $('#tagLine').hide();
             $('#logging').hide();
             $('#show_original_main').toggle();
             $('#dataViewModal').modal('hide');
         });
         $('#func_show').on('click', function () {
-            $('.toggle').hide();
+            $('.toggle').hide();$('#tagLine').hide();
             $('#logging').hide();
             $('#show_main').toggle();
             $('#dataViewModal').modal('hide');
         });
         $('#func_head').on('click', function () {
-            $('.toggle').hide();
+            $('.toggle').hide();$('#tagLine').hide();
             $('#logging').hide();
             $('#head_main').toggle();
             $('#dataViewModal').modal('hide');
         });
         $('#func_tail').on('click', function () {
-            $('.toggle').hide();
+            $('.toggle').hide();$('#tagLine').hide();
             $('#logging').hide();
             $('#tail_main').toggle();
             $('#dataViewModal').modal('hide');
         });
         $('#func_info').on('click', function () {
             $('.toggle').hide();$('#logging').hide();
+            $('#tagLine').hide();
             $('#info_main').toggle();
             $('#dataViewModal').modal('hide');
 
         });
         $('#func_describe').on('click', function () {
             $('.toggle').hide();$('#logging').hide();
+            $('#tagLine').hide();
             $('#describe_main').toggle();
             $('#dataViewModal').modal('hide');
         });
 
         $('#func_shape').on('click', function () {
             $('.toggle').hide();$('#logging').hide();
+            $('#tagLine').hide();
             $('#shape_main').toggle();
             $('#dataViewModal').modal('hide');
         });
 
         $('#func_columns').on('click', function () {
             $('.toggle').hide();$('#logging').hide();
+            $('#tagLine').hide();
             $('#columns_main').toggle();
             $('#dataViewModal').modal('hide');
         });
 
         $('#func_sort_values').on('click', function () {
             $('.toggle').hide();$('#logging').hide();
+            $('#tagLine').hide();
             $('#sort_values_main').toggle();
             $('#dataViewModal').modal('hide');
         });
 
         $('#func_corr').on('click', function () {
             $('.toggle').hide();$('#logging').hide();
+            $('#tagLine').hide();
             $('#corr_main').toggle();
             $('#dataViewModal').modal('hide');
         });
          $('#func_groupby').on('click', function () {
                     $('.toggle').hide();$('#logging').hide();
+                    $('#tagLine').hide();
                     $('#groupby_main').toggle();
                     $('#dataViewModal').modal('hide');
                 });
         $('#func_dtypes').on('click', function () {
                     $('.toggle').hide();$('#logging').hide();
+                    $('#tagLine').hide();
                     $('#dtypes_main').toggle();
                     $('#dataViewModal').modal('hide');
                 });

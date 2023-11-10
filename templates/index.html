@@ -35,7 +35,9 @@
                 <div class="file-upload">
                     <input type="file" id="fileInput" accept=".csv, .xlsx" />
                     <button id="uploadFile">Upload</button>
-                    <button id="openTableInNewTab"><i class="fas fa-arrow-alt-circle-up"></i></button>
+                    <button id="openTableInNewTab" ><i class="fas fa-arrow-alt-circle-up"></i></button>
+                    <button id="download" ><i class="fas fa-arrow-alt-circle-down"></i></button>
+
                 </div>
                 <div class="table-and-buttons">
                     <div class="table-container" id="fileDisplayArea">
@@ -44,11 +46,47 @@
                 </div>
             </div>
              <div class="col-md-6" style="padding-left: 40px">
-                <div id="logging">
+                 <div id="tagLine">
+                     <h2>Web Tool of Pandas</h2>
+                     <div class="features"></div>
+                         <div class="feature"><i class="fas fa-arrows-alt"></i> Drag-and-Drop Functionality</div>
+                          <div class="feature"><i class="fas fa-tasks"></i> Step-by-Step Problem Solving</div>
+                          <div class="feature"><i class="fas fa-cogs"></i> Interactive Input Specifications</div>
+                          <div class="feature"><i class="fas fa-chart-bar"></i> Visualizing Solutions</div>
+                          <div class="feature"><i class="fas fa-code"></i> Logging and Code Display</div>
+
+                 </div>
+
+                 <div id="logging">
                     <h1>Logs of all actions.</h1>
                     <button id="show_logs_button">Show Logs</button><br><br>
                     <div id="loggs">
                         <textarea id="logsTextArea" rows="10" cols="50"></textarea>
+                    </div>
+                </div>
+                 <div id="downloads" class="text-center">
+                    <h1>Download in any format.</h1><br>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <button id="download_csv_button">CSV</button>
+                        </div>
+                        <div class="col-md-4">
+                            <button id="download_json_button">JSON</button>
+                        </div>
+                        <div class="col-md-4">
+                            <button id="download_html_button" >HTML</button>
+                        </div>
+                    </div><br><br>
+                     <div class="row">
+                        <div class="col-md-4">
+                            <button id="download_c_button">Other</button>
+                        </div>
+                        <div class="col-md-4">
+                            <button id="download_j_button">Other</button>
+                        </div>
+                        <div class="col-md-4">
+                            <button id="download_h_button" >Other</button>
+                        </div>
                     </div>
                 </div>
                 <div class="Functions" style="margin-top: 150px; padding-left: 50px">
@@ -213,7 +251,26 @@
                         </div>
                         <button id="drop_button">Drop</button>
                     </div>
-
+                    <div class="toggle" id="drop_duplicates_main">
+                        <h1>Drop Duplicates Function</h1>
+                        <p>It is used to drop all duplicated values from the DataFrame.</p>
+                        <label for="ddParameters">Parameters of Drop Duplicates:</label>
+                        <select id="ddParameters">
+                            <option value="first">First</option>
+                            <option value="last">Last</option>
+                        </select><br>
+                        <button id="drop_duplicates_button">Drop Duplicates</button>
+                    </div>
+                    <div class="toggle" id="duplicates_main">
+                        <h1>Duplicates Report</h1>
+                        <p>It provide the report of the numbers of duplicates presents.</p>
+                        <button id="duplicates_button">Show Duplicates Report</button>
+                    </div>
+                    <div class="toggle" id="resetindex_main">
+                        <h1>Reset Index Function</h1>
+                        <p>It is used to reset the index of a DataFrame, converting the current index (labels) into columns and assigning a new default integer index</p>
+                        <button id="resetindex_button">ReIndex</button>
+                    </div>
 
 
                 </div>
@@ -334,15 +391,14 @@
 
                  <ul class="grid">
                      <li id="func_drop">drop()</li>
-                    <li>drop_duplicates()</li>
-                    <li>duplicated()</li>
+                    <li id="func_duplicates">Duplicates()</li>
+                    <li id="func_drop_duplicates">drop_duplicates()</li>
                      <li id="func_isna">isna()</li>
                     <li id="func_fillna">fillna()</li>
                     <li id="func_dropna">dropna()</li>
                     <li id="func_ffill">ffill()</li>
                     <li id="func_bfill">bfill()</li>
-                    <li>interpolate()</li>
-                    <li>reindex()</li>
+                    <li id="func_resetindex">resetIndex()</li>
     </ul>
                     </div>
         </div>
