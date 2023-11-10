@@ -34,7 +34,7 @@ This web tool aims to assist beginners by guiding them through step-by-step prob
    cd pandas-helper
 
    # Install dependencies
-   pip install -r requirements.txt```
+   pip install -r requirements.txt
 3. **Running the app**
    ```bash
     # Run the Flask application
