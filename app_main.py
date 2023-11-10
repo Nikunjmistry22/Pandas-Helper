@@ -1,7 +1,12 @@
 from flask import Flask, render_template,request,jsonify
 import pandas as pd
 import openpyxl,secrets
-from io import StringIO
+import matplotlib
+matplotlib.use('agg')
+import matplotlib.pyplot as plt
+from io import StringIO,BytesIO
+import base64
+
 app = Flask(__name__)
 
 secret_key = secrets.token_urlsafe(16)
@@ -464,5 +469,77 @@ def show_reset_index():
 @app.route('/logs')
 def show_logs():
     return logs
+
+
+#==================================Data Visualization============================================
+@app.route('/show_bar')
+def show_bar():
+    try:
+        row = request.args.get('row')
+        col = request.args.get('col')
+        color=request.args.get('color')
+        if color:
+            colors = color.split(',')
+            plt.bar(df[row], df[col],color=colors)
+        else:
+            plt.bar(df[row],df[col])
+        # Adding labels and title
+        plt.xlabel(row)
+        plt.ylabel(col)
+        img_buffer = BytesIO()
+        plt.savefig(img_buffer, format='png')
+        img_buffer.seek(0)
+        img_str = base64.b64encode(img_buffer.read()).decode('utf-8')
+        plt.close()
+
+        return f'<img src="data:image/png;base64,{img_str}">'
+
+    except Exception as e:
+        return f"Error: {str(e)}"
+
+
+@app.route('/show_scatter')
+def show_scatter():
+    try:
+        row = request.args.get('row')
+        col = request.args.get('col')
+        plt.scatter(df[row], df[col])
+        plt.xlabel(row)
+        plt.ylabel(col)
+        # Adding labels and title
+        img_buffer = BytesIO()
+        plt.savefig(img_buffer, format='png')
+        img_buffer.seek(0)
+        img_str = base64.b64encode(img_buffer.read()).decode('utf-8')
+        plt.close()
+
+        return f'<img src="data:image/png;base64,{img_str}">'
+
+    except Exception as e:
+        return f"Error: {str(e)}"
+
+
+@app.route('/show_line')
+def show_line():
+    try:
+        row = request.args.get('row')
+        col = request.args.get('col')
+        plt.plot(df[row], df[col])
+        # Adding labels and title
+        plt.xlabel(row)
+        plt.ylabel(col)
+        img_buffer = BytesIO()
+        plt.savefig(img_buffer, format='png')
+        img_buffer.seek(0)
+        img_str = base64.b64encode(img_buffer.read()).decode('utf-8')
+        plt.close()
+
+        return f'<img src="data:image/png;base64,{img_str}">'
+
+    except Exception as e:
+        return f"Error: {str(e)}"
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)

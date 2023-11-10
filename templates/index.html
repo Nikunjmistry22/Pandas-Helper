@@ -271,6 +271,36 @@
                         <p>It is used to reset the index of a DataFrame, converting the current index (labels) into columns and assigning a new default integer index</p>
                         <button id="resetindex_button">ReIndex</button>
                     </div>
+                    <!--======================Data Visualize====================================-->
+                    <div class="toggle" id="bar_main">
+                        <h1>Bar Graph</h1>
+                        <p>It is a visual representation of categorical data, where rectangular bars of varying lengths are used to illustrate the values associated with different categories, providing a clear comparison of data points.
+                         <br><br><input id="bar_row_value" placeholder="Enter col for ROW">
+                         <input id="bar_col_value" placeholder="Enter col for COL"><br><br>
+                         <label for="bar_color_input">Enter Bar Colors (comma-separated):</label>
+                        <input id="bar_color_input" placeholder="Optional">
+                        <p>Accepted Colors: red, green, blue, yellow, orange, purple, ... (add more as needed)</p>
+                        <br><button id="bar_button">Plot Bar</button>
+
+                    </div>
+                    <div class="toggle" id="scatter_main">
+                        <h1>Scatter Plot</h1>
+                        <p>A scatter plot is a graphical representation of individual data points in a two-dimensional space, where each point on the plot corresponds to the values of two variables, providing a visual depiction of their relationship and distribution.</p><br><br>
+                        <input id="scatter_row_value" placeholder="Enter col for ROW">
+                         <input id="scatter_col_value" placeholder="Enter col for COL">
+                         <br><br><button id="scatter_button">Plot Scatter</button><br><br>
+
+                    </div>
+
+                    <div class="toggle" id="line_main">
+                        <h1>Line Graph</h1>
+                        <p>A line graph is used to visualize the relationship and trends in data points over a continuous interval or time period.</p>
+                        <input id="line_row_value" placeholder="Enter col for ROW">
+                         <input id="line_col_value" placeholder="Enter col for COL">
+                        <br><br><button id="line_button">Plot Line</button>
+
+                    </div>
+
 
 
                 </div>
@@ -416,12 +446,17 @@
             <div class="modal-body">
 
                  <ul class="grid">
-        <li>plot()</li>
-        <li>hist()</li>
-        <li>boxplot()</li>
-        <li>scatter()</li>
-        <li>bar()</li>
-        <li>pie()</li>
+        <li id="func_bar">Bar</li>
+        <li id="func_scatter">Scatter</li>
+        <li id="func_line">Line</li>
+        <li id="func_histogram">Histogram</li>
+        <li id="func_boxplot">BoxPlot</li>
+        <li id="func_pie">Pie</li>
+        <li id="func_heatmap">Heatmap</li>
+        <li id="func_area">Area</li>
+        <li id="func_violin">Violin</li>
+        <li id="func_stacked_area">Stacked Area</li>
+        <li id="func_3d">3D</li>
     </ul>
                     </div>
         </div>
@@ -437,6 +472,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script src="{{ url_for('static', filename='js/DataView.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/DataVisual.js') }}"></script>
     <script src="{{ url_for('static', filename='js/DataCleaning.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.0/xlsx.full.min.js"></script>
 
