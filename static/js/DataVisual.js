@@ -29,13 +29,23 @@ $(document).ready(function () {
             $('#boxplot_main').toggle();
             $('#dataVisualizationModal').modal('hide');
         });
-        $('#func_pie').on('click', function () {
+        $('#func_area').on('click', function () {
             $('.toggle').hide();
             $('#tagLine').hide();
             $('#logging').hide();
-            $('#pie_main').toggle();
+            $('#area_main').toggle();
             $('#dataVisualizationModal').modal('hide');
         });
+        $('#func_violin').on('click', function () {
+            $('.toggle').hide();
+            $('#tagLine').hide();
+            $('#logging').hide();
+            $('#violin_main').toggle();
+            $('#dataVisualizationModal').modal('hide');
+        });
+
+
+
 });
 
 
@@ -109,10 +119,54 @@ document.getElementById('line_button').addEventListener('click', function() {
 });
 
 
+
+
 document.getElementById('boxplot_button').addEventListener('click', function() {
-     const row = document.getElementById('boxplot_row_value').value; // Get the value from the input box
-       const col = document.getElementById('boxplot_col_value').value; // Get the value from the input box
-       const url = `/show_boxplot?row=${row}&col=${col}`;
+       const url = `/show_boxplot`;
+    fetch(url)
+    .then(response => {
+        if (response.ok) {
+            return response.text();  // Ensure the response is treated as text
+        } else {
+            throw new Error('Failed to fetch DataFrame head.');
+        }
+    })
+    .then(data => {
+        document.getElementById('fileDisplayArea').innerHTML = data;
+        // Display the DataFrame head data as needed
+    })
+    .catch(error => {
+        console.error('DataFrame head fetch error:', error.message);
+        alert('Error!',error.message);
+    });
+});
+
+
+document.getElementById('area_button').addEventListener('click', function() {
+       const row = document.getElementById('area_row_value').value; // Get the value from the input box
+       const col = document.getElementById('area_col_value').value; // Get the value from the input box
+       const url = `/show_area?row=${row}&col=${col}`;
+    fetch(url)
+    .then(response => {
+        if (response.ok) {
+            return response.text();  // Ensure the response is treated as text
+        } else {
+            throw new Error('Failed to fetch DataFrame head.');
+        }
+    })
+    .then(data => {
+        document.getElementById('fileDisplayArea').innerHTML = data;
+        // Display the DataFrame head data as needed
+    })
+    .catch(error => {
+        console.error('DataFrame head fetch error:', error.message);
+        alert('Error!',error.message);
+    });
+});
+
+
+document.getElementById('violin_button').addEventListener('click', function() {
+       const url = `/show_violin`;
     fetch(url)
     .then(response => {
         if (response.ok) {

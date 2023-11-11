@@ -36,7 +36,6 @@
                     <input type="file" id="fileInput" accept=".csv, .xlsx" />
                     <button id="uploadFile">Upload</button>
                     <button id="openTableInNewTab" ><i class="fas fa-arrow-alt-circle-up"></i></button>
-                    <button id="download" ><i class="fas fa-arrow-alt-circle-down"></i></button>
 
                 </div>
                 <div class="table-and-buttons">
@@ -62,31 +61,6 @@
                     <button id="show_logs_button">Show Logs</button><br><br>
                     <div id="loggs">
                         <textarea id="logsTextArea" rows="10" cols="50"></textarea>
-                    </div>
-                </div>
-                 <div id="downloads" class="text-center">
-                    <h1>Download in any format.</h1><br>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <button id="download_csv_button">CSV</button>
-                        </div>
-                        <div class="col-md-4">
-                            <button id="download_json_button">JSON</button>
-                        </div>
-                        <div class="col-md-4">
-                            <button id="download_html_button" >HTML</button>
-                        </div>
-                    </div><br><br>
-                     <div class="row">
-                        <div class="col-md-4">
-                            <button id="download_c_button">Other</button>
-                        </div>
-                        <div class="col-md-4">
-                            <button id="download_j_button">Other</button>
-                        </div>
-                        <div class="col-md-4">
-                            <button id="download_h_button" >Other</button>
-                        </div>
                     </div>
                 </div>
                 <div class="Functions" style="margin-top: 150px; padding-left: 50px">
@@ -181,6 +155,7 @@
                             <option value="sum">Sum</option>
                             <option value="count">Count</option>
                         </select>
+                        <p>For multiple columns, use a comma between column names (e.g., col1, col2)</p>
                         <button id="groupBy_button">Group By</button>
                     </div>
                     <!--  Data Cleaning Functionality-->
@@ -269,7 +244,7 @@
                     <div class="toggle" id="resetindex_main">
                         <h1>Reset Index Function</h1>
                         <p>It is used to reset the index of a DataFrame, converting the current index (labels) into columns and assigning a new default integer index</p>
-                        <button id="resetindex_button">ReIndex</button>
+                        <button id="resetindex_button">Reset Index</button>
                     </div>
                     <!--======================Data Visualize====================================-->
                     <div class="toggle" id="bar_main">
@@ -280,15 +255,17 @@
                          <label for="bar_color_input">Enter Bar Colors (comma-separated):</label>
                         <input id="bar_color_input" placeholder="Optional">
                         <p>Accepted Colors: red, green, blue, yellow, orange, purple, ... (add more as needed)</p>
-                        <br><button id="bar_button">Plot Bar</button>
+                        <p class="warning" style="color:red;">Only Numerical Columns in Columns Output of Bar Chart</p>
+                        <button id="bar_button">Plot Bar</button>
 
                     </div>
                     <div class="toggle" id="scatter_main">
                         <h1>Scatter Plot</h1>
-                        <p>A scatter plot is a graphical representation of individual data points in a two-dimensional space, where each point on the plot corresponds to the values of two variables, providing a visual depiction of their relationship and distribution.</p><br><br>
+                        <p>A scatter plot is a graphical representation of individual data points in a two-dimensional space, where each point on the plot corresponds to the values of two variables, providing a visual depiction of their relationship and distribution.</p><br>
                         <input id="scatter_row_value" placeholder="Enter col for ROW">
                          <input id="scatter_col_value" placeholder="Enter col for COL">
-                         <br><br><button id="scatter_button">Plot Scatter</button><br><br>
+                        <br><p class="warning" style="color:red;">Only Numerical Columns are allowed!!</p>
+                        <button id="scatter_button">Plot Scatter</button>
 
                     </div>
 
@@ -298,6 +275,32 @@
                         <input id="line_row_value" placeholder="Enter col for ROW">
                          <input id="line_col_value" placeholder="Enter col for COL">
                         <br><br><button id="line_button">Plot Line</button>
+
+                    </div>
+
+
+
+                    <div class="toggle" id="boxplot_main">
+                        <h1>BoxPlot</h1>
+                        <p>A boxplot is a statistical visualization that displays the distribution of a dataset, highlighting key measures such as the median, quartiles, and potential outliers.
+                        <p class="warning" style="color:red;">Only Numerical Columns are allowed!!</p>
+                            <br><button id="boxplot_button">BoxPlot</button>
+
+                    </div>
+                    <div class="toggle" id="area_main">
+                        <h1>Area Chart</h1>
+                        <p>An area chart is a type of data visualization that displays the cumulative values of different data series over time or categories, emphasizing the overall trend.
+                        <br><br><input id="area_row_value" placeholder="Enter col for ROW">
+                         <input id="area_col_value" placeholder="Enter col for COL">
+                         <p class="warning" style="color:red;">Only Numerical Columns are allowed on Columns Output of Area Chart!!</p>
+                            <br><button id="area_button">PLot AreaChart</button>
+
+                    </div>
+                    <div class="toggle" id="violin_main">
+                        <h1>Violin Chart</h1>
+                        <p>A violin plot is used to visualize the distribution of a dataset across different categories or groups. It combines aspects of a box plot and a kernel density plot.
+                        <p class="warning" style="color:red;">Only Numerical Columns are allowed!!</p>
+                            <br><button id="violin_button">Plot Violin</button>
 
                     </div>
 
@@ -319,19 +322,11 @@
             </div>
             <div class="modal-body">
             <ul class="grid">
-                <li>pd.to_csv()</li>
-                <li>pd.to_excel()</li>
-                <li>pd.to_sql()</li>
-                <li>pd.to_json()</li>
-                <li>pd.to_html()</li>
-                <li>pd.to_clipboard()</li>
-                <li>pd.to_pickle()</li>
-                <li>pd.to_feather()</li>
-                <li>pd.to_parquet()</li>
-                <li>pd.to_gbq()</li>
-                <li>pd.to_stata()</li>
-                <li>pd.to_sql()</li>
-                <li>pd.to_hdf()</li>
+                <li id="func_json">To Json()</li>
+                <li id="func_tsv">To Tsv</li>
+                <li id="func_latex">To Latex</li>
+                <li id="func_parquet">To Parquet</li>
+                <li id="func_xml">To Xml</li>
             </ul>
                     </div>
         </div>
@@ -349,26 +344,15 @@
             <div class="modal-body">
 <ul class="grid">
                 <li>set_index()</li>
-        <li>reset_index()</li>
-        <li>drop()</li>
-        <li>rename()</li>
-        <li>astype()</li>
-        <li>loc[]</li>
-        <li>iloc[]</li>
-        <li>where()</li>
-        <li>mask()</li>
-        <li>query()</li>
-        <li>apply()</li>
-        <li>map()</li>
-        <li>merge()</li>
-        <li>concat()</li>
-        <li>append()</li>
-        <li>melt()</li>
-        <li>pivot()</li>
-        <li>stack()</li>
-        <li>unstack()</li>
-        <li>cut()</li>
-        <li>qcut()</li>
+                <li>rename()</li>
+                <li>astype()</li>
+                <li>loc[]</li>
+                <li>iloc[]</li>
+                <li>where()</li>
+                <li>map()</li>
+                <li>merge()</li>
+                <li>concat()</li>
+
 </ul>
 
                     </div>
@@ -397,11 +381,9 @@
                     <li id="func_dtypes">dtypes</li>
                     <li id="func_columns">columns</li>
                     <li id="func_shape">shape</li>
-                    <li>value_counts()</li>
                     <li id="func_groupby">groupby()</li>
                     <li id="func_sort_values">sort_values()</li>
                     <li id="func_corr">corr()</li>
-                    <li>pivot_table()</li>
     </ul>
                 </ul>
                     </div>
@@ -449,14 +431,9 @@
         <li id="func_bar">Bar</li>
         <li id="func_scatter">Scatter</li>
         <li id="func_line">Line</li>
-        <li id="func_histogram">Histogram</li>
         <li id="func_boxplot">BoxPlot</li>
-        <li id="func_pie">Pie</li>
-        <li id="func_heatmap">Heatmap</li>
         <li id="func_area">Area</li>
         <li id="func_violin">Violin</li>
-        <li id="func_stacked_area">Stacked Area</li>
-        <li id="func_3d">3D</li>
     </ul>
                     </div>
         </div>
@@ -474,6 +451,7 @@
     <script src="{{ url_for('static', filename='js/DataView.js') }}"></script>
     <script src="{{ url_for('static', filename='js/DataVisual.js') }}"></script>
     <script src="{{ url_for('static', filename='js/DataCleaning.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/DataOutput.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.0/xlsx.full.min.js"></script>
 
 </body>

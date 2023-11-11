@@ -1,4 +1,4 @@
-from flask import Flask, render_template,request,jsonify
+from flask import Flask, render_template,request,jsonify,Markup
 import pandas as pd
 import openpyxl,secrets
 import matplotlib
@@ -33,9 +33,6 @@ def upload_file():
         elif file.filename.endswith('.xlsx'):
             df = pd.read_excel(file)
     original=df.copy()
-
-    # Process the uploaded file here, save it, and return an appropriate response
-    # Example: file.save('uploads/' + file.filename)
     return 'File uploaded successfully and converted in Dataframe'
 
 @app.route('/show_original')
@@ -44,7 +41,7 @@ def show_original():
     try:
         if original is not None:
 
-            return original.to_html()
+            return Markup(original.to_html())
         else:
             return 'No original DataFrame available.'
     except Exception as e:
@@ -66,9 +63,9 @@ def show():
         if columns:
             columns_list = columns.split(',')
             df = df[columns_list]
-            return new_df.to_html()
+            return Markup(new_df.to_html())
         else:
-            return df.to_html()
+            return Markup(df.to_html())
     else:
         return 'No DataFrame available.'
 
@@ -84,12 +81,12 @@ def show_head():
                 new_df=df.head(int(head_value))
                 df=new_df
                 logs += f"df = df.head({head_value})\n"
-                return df.head(int(head_value)).to_html()
+                return Markup(df.head(int(head_value)).to_html())
             else:
                 new_df=df.head()
                 df=new_df
                 logs += f"df = df.head()\n"
-                return df.head().to_html()
+                return Markup(df.head().to_html())
         else:
             return 'No DataFrame available.'
     except ValueError:
@@ -105,12 +102,12 @@ def show_tail():
                 new_df = df.tail(int(tail_value))
                 df = new_df
                 logs += f"df = df.tail({tail_value})\n"
-                return df.tail(int(tail_value)).to_html()
+                return Markup(df.tail(int(tail_value)).to_html())
             else:
                 new_df = df.tail()
                 df = new_df
                 logs += f"df = df.tail()\n"
-                return df.tail().to_html()
+                return Markup(df.tail().to_html())
         else:
             return 'No DataFrame available.'
     except ValueError:
@@ -152,7 +149,7 @@ def show_describe():
         if df is not None:
             new_df=df
             logs += f"df.describe()\n"
-            return new_df.describe().to_html()
+            return Markup(new_df.describe().to_html())
 
         else:
             return 'No DataFrame available.'
@@ -203,7 +200,7 @@ def show_sort_values():
             ascending = ascending.lower() == "true"  # Convert the string value to a Boolean
             new_df = df.sort_values(by=by_value, ascending=ascending)
             df = new_df
-            return df.to_html()
+            return Markup(df.to_html())
         else:
             return 'No DataFrame available.'
     except Exception as e:
@@ -224,7 +221,7 @@ def show_corr():
             else:
                 return 'Invalid method'
 
-            return correlation.to_html()
+            return Markup(correlation.to_html())
         else:
             return 'No DataFrame available.'
     except Exception as e:
@@ -233,7 +230,7 @@ def show_corr():
 @app.route('/group_by_column')
 def group_by_column():
     global df, new_df
-    column = request.args.get('column')
+    column = request.args.get('column').split(',')
     aggregation = request.args.get('aggregation')
 
     try:
@@ -243,21 +240,26 @@ def group_by_column():
             new_df = df.copy()  # Create a copy of the original DataFrame
             if aggregation == 'max':
                 df= new_df.groupby(column).max()
+                df.reset_index(inplace=True)
                 return df.to_html()
             elif aggregation == 'min':
                 df= new_df.groupby(column).min()
-                return df.to_html()
+                df.reset_index(inplace=True)
+                return Markup(df.to_html())
             elif aggregation == 'sum':
                 df= new_df.groupby(column).sum()
-                return df.to_html()
+
+                df.reset_index(inplace=True)
+                return Markup(df.to_html())
             elif aggregation == 'avg':
                 df= new_df.groupby(column).mean()
-                return df.to_html()
+                df.reset_index(inplace=True)
+                return Markup(df.to_html())
             elif aggregation == 'count':
                 df = new_df.groupby(column).size().reset_index(name='count')
                 # df = df[df['count'] == df['count'].max()]
-                df.columns = [column, 'count']
-                return df.to_html()
+                df.columns = column + ['count']
+                return Markup(df.to_html())
 
             else:
                 return 'Invalid Aggregation Method'
@@ -272,7 +274,7 @@ def show_isna():
     global df,new_df
     try:
         if df is not None:
-            return df.isna().sum().reset_index().to_html()
+            return Markup(df.isna().sum().reset_index().rename(columns={0: 'naCount'}).to_html())
 
         else:
             return 'No DataFrame available.'
@@ -288,7 +290,7 @@ def show_fillna():
         if df is not None and target_column in df.columns:
             # Modify the specified column with the filled values
             df[target_column] = df[target_column].fillna(value=target_column_value)
-            return df.to_html()
+            return Markup(df.to_html())
         else:
             return 'No DataFrame available.'
     except Exception as e:
@@ -304,7 +306,7 @@ def show_ffill():
         if df is not None and target_column in df.columns:
             # Modify the specified column with the filled values
             df[target_column] = df[target_column].fillna(method='ffill')
-            return df.to_html()
+            return Markup(df.to_html())
         else:
             return 'No DataFrame available.'
     except Exception as e:
@@ -320,7 +322,7 @@ def show_bfill():
         if df is not None and target_column in df.columns:
             # Modify the specified column with the filled values
             df[target_column] = df[target_column].fillna(method='bfill')
-            return df.to_html()
+            return Markup(df.to_html())
         else:
             return 'No DataFrame available.'
     except Exception as e:
@@ -344,7 +346,7 @@ def dropna():
                 else:
                     return 'Invalid how value'
 
-                return df.to_html()
+                return Markup(df.to_html())
             elif criteria.startswith('how_col'):
                 how_value = request.args.get('how')
                 if how_value == 'any':
@@ -354,7 +356,7 @@ def dropna():
                 else:
                     return 'Invalid how value'
 
-                return df.to_html()
+                return Markup(df.to_html())
 
             elif criteria.startswith('thresh_row'):
                 thresh_value = request.args.get('thresh')
@@ -364,7 +366,7 @@ def dropna():
                 else:
                     return 'Threshold value not provided'
 
-                return df.to_html()
+                return Markup(df.to_html())
             elif criteria.startswith('thresh_col'):
                 thresh_value = request.args.get('thresh')
                 if thresh_value:
@@ -373,7 +375,7 @@ def dropna():
                 else:
                     return 'Threshold value not provided'
 
-                return df.to_html()
+                return Markup(df.to_html())
             else:
                 return 'Invalid criteria'
         else:
@@ -394,14 +396,14 @@ def drop():
                 for row_number in row_numbers:
                     if row_number:
                         df.drop(df.index[int(row_number)], inplace=True)
-                return df.to_html()
+                return Markup(df.to_html())
 
             elif drop_type == 'column':
                 column_names = request.args.get('column_names').split(',')
                 for column_name in column_names:
                     if column_name in df.columns:
                         df.drop(column_name, axis=1, inplace=True)
-                return df.to_html()
+                return Markup(df.to_html())
 
             else:
                 return 'Invalid drop type'
@@ -426,7 +428,7 @@ def show_drop_duplicates():
             else:
                 return 'Invalid method'
 
-            return df.to_html()
+            return Markup(df.to_html())
         else:
             return 'No DataFrame available.'
     except Exception as e:
@@ -458,7 +460,7 @@ def show_reset_index():
     try:
         if df is not None:
             df=df.reset_index(drop=True)
-            return df.to_html()
+            return Markup(df.to_html())
         else:
             return 'No DataFrame available.'
     except pd.errors.EmptyDataError:
@@ -472,6 +474,7 @@ def show_logs():
 
 
 #==================================Data Visualization============================================
+plt.figure(figsize=(10, 8))
 @app.route('/show_bar')
 def show_bar():
     try:
@@ -484,8 +487,10 @@ def show_bar():
         else:
             plt.bar(df[row],df[col])
         # Adding labels and title
-        plt.xlabel(row)
         plt.ylabel(col)
+        plt.xlabel(row)
+        if len(df[row])>5:
+            plt.xticks(rotation=90)
         img_buffer = BytesIO()
         plt.savefig(img_buffer, format='png')
         img_buffer.seek(0)
@@ -528,6 +533,8 @@ def show_line():
         # Adding labels and title
         plt.xlabel(row)
         plt.ylabel(col)
+        if len(df[row])>5:
+            plt.xticks(rotation=90)
         img_buffer = BytesIO()
         plt.savefig(img_buffer, format='png')
         img_buffer.seek(0)
@@ -541,5 +548,102 @@ def show_line():
 
 
 
+@app.route('/show_boxplot')
+def show_boxplot():
+    try:
+        # plt.violinplot(df, showmeans=False, showmedians=True)
+        df.boxplot()
+        if len(df.columns)>5:
+            plt.xticks(rotation=90)
+        img_buffer = BytesIO()
+        plt.savefig(img_buffer, format='png')
+        img_buffer.seek(0)
+        img_str = base64.b64encode(img_buffer.read()).decode('utf-8')
+        plt.close()
+
+        return f'<img src="data:image/png;base64,{img_str}">'
+
+    except Exception as e:
+        return f"Error: {str(e)}"
+
+
+@app.route('/show_area')
+def show_area():
+    try:
+        row = request.args.get('row')
+        col = request.args.get('col')
+        plt.fill_between(df[row], df[col])
+
+        # Adding labels and title
+        plt.xlabel(row)
+        plt.ylabel(col)
+        if len(df[row])>5:
+            plt.xticks(rotation=90)
+        img_buffer = BytesIO()
+        plt.savefig(img_buffer, format='png')
+        img_buffer.seek(0)
+        img_str = base64.b64encode(img_buffer.read()).decode('utf-8')
+        plt.close()
+
+        return f'<img src="data:image/png;base64,{img_str}">'
+
+    except Exception as e:
+        return f"Error: {str(e)}"
+
+
+@app.route('/show_violin')
+def show_violin():
+    try:
+        plt.violinplot(df, showmeans=False, showmedians=True)
+        if len(df.columns)>5:
+            plt.xticks(rotation=90)
+        img_buffer = BytesIO()
+        plt.savefig(img_buffer, format='png')
+        img_buffer.seek(0)
+        img_str = base64.b64encode(img_buffer.read()).decode('utf-8')
+        plt.close()
+
+        return f'<img src="data:image/png;base64,{img_str}">'
+
+    except Exception as e:
+        return f"Error: {str(e)}"
+
+
+#======================================Data Output========================================
+@app.route('/show_json')
+def show_json():
+    try:
+        return Markup(df.to_json())
+    except Exception as e:
+        return f"Error: {str(e)}"
+
+@app.route('/show_xml')
+def show_xml():
+    try:
+        return Markup(df.to_xml())
+    except Exception as e:
+        return f"Error: {str(e)}"
+
+
+@app.route('/show_parquet')
+def show_parquet():
+    try:
+        return Markup(df.to_parquet())
+    except Exception as e:
+        return f"Error: {str(e)}"
+
+@app.route('/show_latex')
+def show_clipboard():
+    try:
+        return Markup(df.to_latex())
+    except Exception as e:
+        return f"Error: {str(e)}"
+
+@app.route('/show_tsv')
+def show_tsv():
+    try:
+        return Markup(df.to_csv(sep="\t"))
+    except Exception as e:
+        return f"Error: {str(e)}"
 if __name__ == '__main__':
     app.run(debug=True)

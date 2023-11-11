@@ -177,12 +177,7 @@ $(document).ready(function () {
 
         });
 
-         $('#download').on('click', function () {
-            $('.toggle').hide();$('#tagLine').hide();
-            $('#logging').hide();
-            $('#downloads').toggle();
 
-        });
   });
 
 
