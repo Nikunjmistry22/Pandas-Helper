@@ -106,3 +106,101 @@
 - **Purpose:** Perform group-by operation on specified column(s) with specified aggregation.
 - **Description:** This endpoint performs a group-by operation on the specified column(s) using the specified aggregation method ('max', 'min', 'sum', 'avg', or 'count'). If the DataFrame is not available, it returns a message indicating that there is no DataFrame.
 - **End Result:** Returns the HTML representation of the grouped DataFrame or a message indicating that there is no DataFrame available.
+## 14. `/show_isna`
+
+- **Method:** GET
+- **Purpose:** Display the count of missing values in the DataFrame.
+- **Description:** This endpoint calculates and displays the count of missing values (NaN) in each column of the DataFrame. If the DataFrame is not available, it returns a message indicating that there is no DataFrame.
+- **End Result:** Returns the HTML representation of the missing value counts or a message indicating that there is no DataFrame available.
+
+## 15. `/show_fillna`
+
+- **Method:** GET
+- **Parameter:**
+  - `target_column` (required)
+  - `target_column_value` (required)
+- **Purpose:** Fill missing values in the specified column with a given value.
+- **Description:** This endpoint fills missing values in the specified column of the DataFrame with the provided value. If the DataFrame is not available or the specified column is not present, it returns a message indicating that there is no DataFrame or the column is invalid.
+- **End Result:** Returns the HTML representation of the DataFrame with filled values or a message indicating that there is no DataFrame available.
+
+## 16. `/show_ffill`
+
+- **Method:** GET
+- **Parameter:**
+  - `target_column` (required)
+- **Purpose:** Forward fill missing values in the specified column.
+- **Description:** This endpoint forward fills missing values in the specified column of the DataFrame. If the DataFrame is not available or the specified column is not present, it returns a message indicating that there is no DataFrame or the column is invalid.
+- **End Result:** Returns the HTML representation of the DataFrame with forward-filled values or a message indicating that there is no DataFrame available.
+
+## 17. `/show_bfill`
+
+- **Method:** GET
+- **Parameter:**
+  - `target_column` (required)
+- **Purpose:** Backward fill missing values in the specified column.
+- **Description:** This endpoint backward fills missing values in the specified column of the DataFrame. If the DataFrame is not available or the specified column is not present, it returns a message indicating that there is no DataFrame or the column is invalid.
+- **End Result:** Returns the HTML representation of the DataFrame with backward-filled values or a message indicating that there is no DataFrame available.
+
+## 18. `/dropna`
+
+- **Method:** GET
+- **Parameter:**
+  - `criteria` (required)
+    - Options:
+      - `how_row`: Drop rows based on a specified condition
+      - `how_col`: Drop columns based on a specified condition
+      - `thresh_row`: Drop rows based on the threshold
+      - `thresh_col`: Drop columns based on the threshold
+  - `how` (required for `how_row` and `how_col`)
+  - `thresh` (required for `thresh_row` and `thresh_col`)
+- **Purpose:** Drop rows or columns based on specified conditions or thresholds.
+- **Description:** This endpoint drops rows or columns based on the specified criteria. It supports dropping rows based on conditions ('how_row'), dropping columns based on conditions ('how_col'), dropping rows based on a threshold ('thresh_row'), and dropping columns based on a threshold ('thresh_col'). If the DataFrame is not available, it returns a message indicating that there is no DataFrame.
+- **End Result:** Returns the HTML representation of the DataFrame after dropping rows or columns or a message indicating that there is no DataFrame available.
+
+## 19. `/drop`
+
+- **Method:** GET
+- **Parameter:**
+  - `drop_type` (required)
+    - Options:
+      - `row`: Drop specified row numbers
+      - `column`: Drop specified column names
+  - `row_numbers` (required for `row`)
+  - `column_names` (required for `column`)
+- **Purpose:** Drop specified rows or columns from the DataFrame.
+- **Description:** This endpoint drops specified rows or columns from the DataFrame based on the specified drop type. It supports dropping rows by providing row numbers ('row') and dropping columns by providing column names ('column'). If the DataFrame is not available, it returns a message indicating that there is no DataFrame.
+- **End Result:** Returns the HTML representation of the DataFrame after dropping specified rows or columns or a message indicating that there is no DataFrame available.
+
+## 20. `/show_drop_duplicates`
+
+- **Method:** GET
+- **Parameter:**
+  - `parameters` (required)
+    - Options:
+      - `first`: Keep the first occurrence of duplicates
+      - `last`: Keep the last occurrence of duplicates
+- **Purpose:** Display the DataFrame after dropping duplicate rows.
+- **Description:** This endpoint drops duplicate rows from the DataFrame based on the specified parameters ('first' or 'last'). If the DataFrame is not available, it returns a message indicating that there is no DataFrame.
+- **End Result:** Returns the HTML representation of the DataFrame after dropping duplicate rows or a message indicating that there is no DataFrame available.
+
+## 21. `/show_duplicates`
+
+- **Method:** GET
+- **Purpose:** Display information about duplicate rows in the DataFrame.
+- **Description:** This endpoint identifies and displays information about duplicate rows in the DataFrame. If duplicate rows are found, it returns a JSON representation of the duplicate rows; otherwise, it returns a message indicating that no duplicates were found. If the DataFrame is not available, it returns a message indicating that there is no DataFrame.
+- **End Result:** Returns a JSON representation of duplicate rows or a message indicating that there are no duplicates or no DataFrame available.
+
+## 22. `/show_reset_index`
+
+- **Method:** GET
+- **Purpose:** Reset the index of the DataFrame.
+- **Description:** This endpoint resets the index of the DataFrame. If the DataFrame is not available, it returns a message indicating that there is no DataFrame.
+- **End Result:** Returns the HTML representation of the DataFrame with reset index or a message indicating that there is no DataFrame available.
+
+## 23. `/logs`
+
+- **Method:** GET
+- **Purpose:** Display logs.
+- **Description:** This endpoint returns the logs generated during the API requests. If no logs are available, it returns a message indicating that there are no logs.
+- **End Result:** Returns the logs or a message indicating that there are no logs available.
+
