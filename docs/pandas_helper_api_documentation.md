@@ -1,5 +1,5 @@
 # API Documentation
-
+# File Management
 ## 1. `/upload`
 
 - **Method:** POST
@@ -9,6 +9,7 @@
 - **Description:** This endpoint handles file uploads and converts the uploaded file to a DataFrame. It supports .csv and .xlsx file formats. If the file is successfully processed, the DataFrame is stored globally, and a success message is returned. If there is an error during file processing, an error message is returned.
 - **End Result:** Returns a success message if the file is uploaded and converted successfully; otherwise, returns an error message.
 
+# Data View
 ## 2. `/show_original`
 
 - **Method:** GET
@@ -106,6 +107,9 @@
 - **Purpose:** Perform group-by operation on specified column(s) with specified aggregation.
 - **Description:** This endpoint performs a group-by operation on the specified column(s) using the specified aggregation method ('max', 'min', 'sum', 'avg', or 'count'). If the DataFrame is not available, it returns a message indicating that there is no DataFrame.
 - **End Result:** Returns the HTML representation of the grouped DataFrame or a message indicating that there is no DataFrame available.
+
+# Data Cleaning
+
 ## 14. `/show_isna`
 
 - **Method:** GET
@@ -203,4 +207,98 @@
 - **Purpose:** Display logs.
 - **Description:** This endpoint returns the logs generated during the API requests. If no logs are available, it returns a message indicating that there are no logs.
 - **End Result:** Returns the logs or a message indicating that there are no logs available.
+
+# Data Visualization
+
+## 24. `/show_bar`
+
+- **Method:** GET
+- **Parameters:**
+  - `row` (required)
+  - `col` (required)
+  - `color` (optional)
+- **Purpose:** Display a bar chart.
+- **Description:** This endpoint generates a bar chart using the specified row and column from the DataFrame. If the color parameter is provided, it uses the specified colors for the bars. The resulting chart is returned as a base64-encoded PNG image.
+- **End Result:** Returns the HTML representation of the bar chart or an error message if an exception occurs.
+
+## 25. `/show_scatter`
+
+- **Method:** GET
+- **Parameters:**
+  - `row` (required)
+  - `col` (required)
+- **Purpose:** Display a scatter plot.
+- **Description:** This endpoint generates a scatter plot using the specified row and column from the DataFrame. The resulting chart is returned as a base64-encoded PNG image.
+- **End Result:** Returns the HTML representation of the scatter plot or an error message if an exception occurs.
+
+## 26. `/show_line`
+
+- **Method:** GET
+- **Parameters:**
+  - `row` (required)
+  - `col` (required)
+- **Purpose:** Display a line chart.
+- **Description:** This endpoint generates a line chart using the specified row and column from the DataFrame. The resulting chart is returned as a base64-encoded PNG image.
+- **End Result:** Returns the HTML representation of the line chart or an error message if an exception occurs.
+
+## 27. `/show_boxplot`
+
+- **Method:** GET
+- **Purpose:** Display a box plot.
+- **Description:** This endpoint generates a box plot from the DataFrame. The resulting chart is returned as a base64-encoded PNG image.
+- **End Result:** Returns the HTML representation of the box plot or an error message if an exception occurs.
+
+## 28. `/show_area`
+
+- **Method:** GET
+- **Parameters:**
+  - `row` (required)
+  - `col` (required)
+- **Purpose:** Display an area plot.
+- **Description:** This endpoint generates an area plot using the specified row and column from the DataFrame. The resulting chart is returned as a base64-encoded PNG image.
+- **End Result:** Returns the HTML representation of the area plot or an error message if an exception occurs.
+
+## 29. `/show_violin`
+
+- **Method:** GET
+- **Purpose:** Display a violin plot.
+- **Description:** This endpoint generates a violin plot from the DataFrame. The resulting chart is returned as a base64-encoded PNG image.
+- **End Result:** Returns the HTML representation of the violin plot or an error message if an exception occurs.
+
+# Data Output
+
+## 30. `/show_json`
+
+- **Method:** GET
+- **Purpose:** Display the DataFrame in JSON format.
+- **Description:** This endpoint converts the DataFrame to JSON format and returns the HTML representation.
+- **End Result:** Returns the HTML representation of the DataFrame in JSON format or an error message if an exception occurs.
+
+## 31. `/show_xml`
+
+- **Method:** GET
+- **Purpose:** Display the DataFrame in XML format.
+- **Description:** This endpoint converts the DataFrame to XML format and returns the HTML representation.
+- **End Result:** Returns the HTML representation of the DataFrame in XML format or an error message if an exception occurs.
+
+## 32. `/show_parquet`
+
+- **Method:** GET
+- **Purpose:** Display the DataFrame in Parquet format.
+- **Description:** This endpoint converts the DataFrame to Parquet format and returns the HTML representation.
+- **End Result:** Returns the HTML representation of the DataFrame in Parquet format or an error message if an exception occurs.
+
+## 33. `/show_latex`
+
+- **Method:** GET
+- **Purpose:** Display the DataFrame in LaTeX format.
+- **Description:** This endpoint converts the DataFrame to LaTeX format and returns the HTML representation.
+- **End Result:** Returns the HTML representation of the DataFrame in LaTeX format or an error message if an exception occurs.
+
+## 34. `/show_tsv`
+
+- **Method:** GET
+- **Purpose:** Display the DataFrame in TSV (Tab-Separated Values) format.
+- **Description:** This endpoint converts the DataFrame to TSV format and returns the HTML representation.
+- **End Result:** Returns the HTML representation of the DataFrame in TSV format or an error message if an exception occurs.
 
