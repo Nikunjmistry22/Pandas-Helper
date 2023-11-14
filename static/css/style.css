@@ -133,3 +133,8 @@ margin-top: 50px;
 .warning{
 color: red;
 }
+
+#sort_values_main> input,
+#sort_values_main >select {
+  margin-bottom: 50px;
+}

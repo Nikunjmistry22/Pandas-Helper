@@ -275,32 +275,6 @@ document.getElementById('columns_button').addEventListener('click', function() {
     });
 });
 
-document.getElementById('sort_values_button').addEventListener('click', function() {
-    const by_value = document.getElementById('by_value').value; // Get the value from the input box
-    const sortOrder = document.getElementById('sortOrderDropdown').value; // Get the selected sort order
-
-    // Convert the sortOrder value to a Boolean
-    const ascendingOrder = sortOrder === "1"; // If sortOrder is "1", it means ascending, otherwise descending
-
-    const url = '/show_sort_values?by_value=' + by_value + '&sortOrder=' + ascendingOrder;
-
-    fetch(url)
-        .then(response => {
-            if (response.ok) {
-                return response.text(); // Ensure the response is treated as text
-            } else {
-                throw new Error('Failed to fetch sort values.');
-            }
-        })
-        .then(data => {
-            document.getElementById('fileDisplayArea').innerHTML = data;
-            // Display the DataFrame head data as needed
-        })
-        .catch(error => {
-            console.error('Sort values fetch error:', error.message);
-            alert('Error!!! Sort values fetch error');
-        });
-});
 
 document.getElementById('corr_button').addEventListener('click', function() {
     const method = document.getElementById('correlationMethod').value;
@@ -345,4 +319,75 @@ document.getElementById('groupBy_button').addEventListener('click', function() {
             console.error('Sort values fetch error:', error.message);
             alert('Error!!! Sort values fetch error');
         });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const sortValuesMainDiv = document.getElementById('sort_values_main');
+    const columnsContainer = document.getElementById('columns-container');
+
+    document.getElementById('add_sort_value').addEventListener('click', function () {
+        // Create a new container for each added column
+        const columnContainer = document.createElement('div');
+        columnContainer.classList.add('column-container');
+
+        // Create a new input element for column name
+        const columnNameInput = document.createElement('input');
+        columnNameInput.classList.add('column-input');
+        columnNameInput.setAttribute('placeholder', 'Enter the column name');
+
+        // Create a new select element for ascending/descending
+        const sortOrderSelect = document.createElement('select');
+        sortOrderSelect.classList.add('column-dropdown');
+        const ascendingOption = document.createElement('option');
+        ascendingOption.setAttribute('value', '1');
+        ascendingOption.textContent = 'Ascending';
+        const descendingOption = document.createElement('option');
+        descendingOption.setAttribute('value', '0');
+        descendingOption.textContent = 'Descending';
+        sortOrderSelect.appendChild(ascendingOption);
+        sortOrderSelect.appendChild(descendingOption);
+        sortOrderSelect.style.marginRight = '10px';
+        const deleteButton = document.createElement('i');
+        deleteButton.style.cursor = 'pointer';
+        deleteButton.classList.add('fa', 'fa-minus', 'delete-button');
+        deleteButton.addEventListener('click', function () {
+            // Remove the column container when the delete button is clicked
+            columnsContainer.removeChild(columnContainer);
+        });
+        // Append the new input and select elements to the column container
+        columnContainer.appendChild(columnNameInput);
+        columnContainer.appendChild(sortOrderSelect);
+         columnContainer.appendChild(deleteButton);
+        // Append the new column container to the columns container
+        columnsContainer.appendChild(columnContainer);
+    });
+
+    document.getElementById('sort_values_button').addEventListener('click', function () {
+        const columnContainers = document.querySelectorAll('.column-container');
+
+        // Extract values from added columns
+        const columnData = Array.from(columnContainers).map(container => ({
+            by_value: container.querySelector('.column-input').value,
+            sortOrder: container.querySelector('.column-dropdown').value,
+        }));
+
+        const url = '/show_sort_values?columns=' + JSON.stringify(columnData);
+
+        fetch(url)
+            .then(response => {
+                if (response.ok) {
+                    return response.text(); // Ensure the response is treated as text
+                } else {
+                    throw new Error('Failed to fetch sort values.');
+                }
+            })
+            .then(data => {
+                document.getElementById('fileDisplayArea').innerHTML = data;
+                // Display the DataFrame head data as needed
+            })
+            .catch(error => {
+                console.error('Sort values fetch error:', error.message);
+                alert('Error!!! Sort values fetch error');
+            });
+    });
 });

@@ -39,26 +39,27 @@
 
                 </div>
                 <div class="table-and-buttons">
-                    <div class="table-container" id="fileDisplayArea">
+                    <div class="table-container" id="fileDisplayArea" val="Table">
                         <p id="loadingText">Uploaded file content will be displayed here.</p>
                     </div>
                 </div>
             </div>
              <div class="col-md-6" style="padding-left: 40px">
                  <div id="tagLine">
-                     <h2>Web Tool of Pandas</h2>
-                     <div class="features"></div>
-                         <div class="feature"><i class="fas fa-arrows-alt"></i> Drag-and-Drop Functionality</div>
-                          <div class="feature"><i class="fas fa-tasks"></i> Step-by-Step Problem Solving</div>
-                          <div class="feature"><i class="fas fa-cogs"></i> Interactive Input Specifications</div>
-                          <div class="feature"><i class="fas fa-chart-bar"></i> Visualizing Solutions</div>
-                          <div class="feature"><i class="fas fa-code"></i> Logging and Code Display</div>
-
+                     <h1>Web Tool of Pandas</h1><br><br><br><br><br>
+                     <div class="features">
+                     <div class="feature"><i class="fas fa-arrows-alt"></i> <h5 style="display: inline;">Drag-and-Drop Functionality</h5></div>
+                     <div class="feature"><i class="fas fa-tasks"></i> <h5 style="display: inline;">Step-by-Step Problem Solving</h5></div>
+                     <div class="feature"><i class="fas fa-cogs"></i> <h5 style="display: inline;">Interactive Input Specifications</h5></div>
+                     <div class="feature"><i class="fas fa-chart-bar"></i> <h5 style="display: inline;">Visualizing Solutions</h5></div>
+                     <div class="feature"><i class="fas fa-code"></i> <h5 style="display: inline;">Logging and Code Display</h5></div>
+                     </div>
                  </div>
 
                  <div id="logging">
                     <h1>Logs of all actions.</h1>
-                    <button id="show_logs_button">Show Logs</button><br><br>
+                    <button id="show_logs_button">Show Logs</button>
+                     <button id="clear_logs_button">Clear Logs</button><br><br>
                     <div id="loggs">
                         <textarea id="logsTextArea" rows="10" cols="50"></textarea>
                     </div>
@@ -121,14 +122,20 @@
 
                     <div class="toggle" id="sort_values_main">
                         <h1>Sort Values Function</h1>
-                        <p>It provides the resulted dataframe either in ascending or descending.</p>
-                        <button id="sort_values_button" >Sort Values</button>
-                        <input id="by_value" placeholder="Enter the column name">
-                        <select id="sortOrderDropdown">
-                            <option value=1>Ascending</option>
-                            <option value=0>Descending</option>
-                        </select>
+                        <p>It provides the resulted dataframe either in ascending or descending.</p><br>
+                        <button id="sort_values_button">Sort Values</button>
+                        <button id="add_sort_value" type="button"><i class="fa fa-plus"></i></button><br><br>
+                        <div id="columns-container"> <!-- Wrap added columns in a container -->
+                            <div class="column-container">
+                                <input class="column-input" placeholder="Enter the column name">
+                                <select class="column-dropdown">
+                                    <option value="1">Ascending</option>
+                                    <option value="0">Descending</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
+
                     <div class="toggle" id="corr_main">
                         <h1>Correlation Function</h1>
                         <p>Calculates the pairwise correlation of columns in a DataFrame.</p>
@@ -303,8 +310,86 @@
                             <br><button id="violin_button">Plot Violin</button>
 
                     </div>
+                    <!--===============================Data Manipulaiton=====================================-->
+                    <div class="toggle" id="rename_main">
+                        <h1>Rename Function</h1>
+                        <p>The rename method in pandas is used to rename columns in a DataFrame.</p>
+                        <input id="rename_old_value" placeholder="Enter col name to rename">
+                         <input id="rename_new_value" placeholder="Enter new Column name">
+                        <br><br><p>For Multiple columns renamed put comma in between ie. a,b,c</p>
+                        <br><button id="rename_button">Rename</button>
 
+                    </div>
+                     <div class="toggle" id="astype_main">
+                        <h1>Astype Function</h1>
+                         <p>It is used to changed the data types of the cols</p>
+                         <input id="astype_column" placeholder="Mention the col name">
+                         <select id="dtype">
+                             <option value="str" selected>Str</option>
+                            <option value="int">Int</option>
+                            <option value="float">Float</option>
+                            <option value="bool">Boolean</option>
+                         </select>
+                          <br><br><p>For Multiple columns renamed put comma in between ie. a,b,c</p>
+                        <br><button id="astype_button" >Change Type</button>
+                    </div>
+                    <div class="toggle" id="set_index_main">
+                        <h1>Set Index Function</h1>
+                         <p>It is used to set an index to a col/multiple cols.</p>
+                         <input id="set_index_column" placeholder="Mention the col name">
+                        <br><br><p>For Multiple columns renamed put comma in between ie. a,b,c</p>
+                        <br><button id="set_index_button" >Set Index</button>
+                    </div>
+                    <div class="toggle" id="concat_main">
+                        <h1>Concat Function</h1>
+                         <p>It is used to concat two columns.</p>
+                         <input id="concat_column" placeholder="Mention the col name">
+                         <input id="aggregate_value" placeholder="Mention the agg value.">
 
+                        <br><br><p>For Multiple columns renamed put comma in between ie. a,b,c</p>
+                        <br><button id="concat_button" >Concat</button>
+                    </div>
+                    <div class="toggle" id="split_main">
+                        <h1>Split Function</h1>
+                         <p>It is used to split the columns value into columns.</p>
+                         <input id="split_column" placeholder="Mention the col name">
+                        <input id="split_value" placeholder="Mention the split value.">
+                        <br><br><button id="split_button" >Split To Columns</button>
+                    </div>
+                    <div class="toggle" id="remove_index_main">
+                        <h1>Remove Index Function</h1>
+                         <p>It is used to remove index at that particular time only on the dataframe.</p>
+                        <br><br><button id="remove_index_button" >Remove Index</button>
+                    </div>
+                    <div class="toggle" id="where_main">
+                        <h1>Conditional Formatting</h1>
+                        <p>It is used for conditional Formatting numeric,string,boolean manipulation.</p>
+                        <label for="manipulation_criteria">Choose the criteria:</label>
+                        <select id="manipulation_criteria">
+                            <option value="int" selected>Integer</option>
+                            <option value="str">String</option>
+                            <option value="float">Float</option>
+                            <option value="bool">Boolean</option>
+                        </select>
+                        <div id="dynamic_fields" class="hidden">
+                          <input type="text" id="column" placeholder="Enter Col name">
+                          <select id="operator">
+                            <option value="equal" class="numeric" > ==</option>
+                            <option value="not_equal" class="numeric">!=</option>
+                            <option value="greater_than" class="numeric">></option>
+                            <option value="greater_equal_than" class="numeric">>=</option>
+                            <option value="les_than" class="numeric"><</option>
+                            <option value="less_equal_than" class="numeric"><=</option>
+                            <option value="equal" class="str"> ==</option>
+                            <option value="equal" class="numeric" selected> ==</option>
+                            <option value="equal" class="bool"> ==</option>
+                            <option value="Contain" class="str">Contain</option>
+                            <!-- Add more comparison operators as needed -->
+                          </select>
+                          <input type="text" id="value" placeholder="Enter value" oninput="validateInput()">
+                          <br><br><button id="where_button">Conditional Format</button><br>
+                        </div>
+                    </div>
 
                 </div>
             </div>
@@ -343,15 +428,14 @@
             </div>
             <div class="modal-body">
 <ul class="grid">
-                <li>set_index()</li>
-                <li>rename()</li>
-                <li>astype()</li>
-                <li>loc[]</li>
-                <li>iloc[]</li>
-                <li>where()</li>
-                <li>map()</li>
-                <li>merge()</li>
-                <li>concat()</li>
+                <li id="func_set_index">set_index()</li>
+                <li id="func_rename">rename()</li>
+                <li id="func_astype">astype()</li>
+                <li id="func_where">Conditional Formatting</li>
+                <li id="func_concat">concat</li>
+                <li id="func_split">Split data</li>
+                <li id="func_remove_index">Remove Index</li>
+
 
 </ul>
 
@@ -452,6 +536,7 @@
     <script src="{{ url_for('static', filename='js/DataVisual.js') }}"></script>
     <script src="{{ url_for('static', filename='js/DataCleaning.js') }}"></script>
     <script src="{{ url_for('static', filename='js/DataOutput.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/DataManipulation.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.0/xlsx.full.min.js"></script>
 
 </body>

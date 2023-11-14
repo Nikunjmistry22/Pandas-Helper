@@ -200,3 +200,24 @@ document.getElementById('show_logs_button').addEventListener('click', function()
         alert('Error: ',error.message);
     });
 });
+
+
+document.getElementById('clear_logs_button').addEventListener('click', function() {
+    const url = `/clear_logs`;
+    fetch(url)
+    .then(response => {
+        if (response.ok) {
+            return response.text();  // Ensure the response is treated as text
+        } else {
+            throw new Error('Failed to fetch DataFrame head.');
+        }
+    })
+    .then(data => {
+        document.getElementById('logsTextArea').innerHTML = data;
+        // Display the DataFrame head data as needed
+    })
+    .catch(error => {
+        console.error('DataFrame head fetch error:', error.message);
+        alert('Error: ',error.message);
+    });
+});

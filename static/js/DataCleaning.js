@@ -76,7 +76,7 @@ document.getElementById('isna_button').addEventListener('click', function() {
     })
     .catch(error => {
         console.error('DataFrame head fetch error:', error.message);
-        alert('Error!!! DataFrame head fetch error');
+        alert('Error!!!');
     });
 });
 

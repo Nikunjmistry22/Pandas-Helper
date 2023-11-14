@@ -120,7 +120,6 @@ document.getElementById('line_button').addEventListener('click', function() {
 
 
 
-
 document.getElementById('boxplot_button').addEventListener('click', function() {
        const url = `/show_boxplot`;
     fetch(url)
