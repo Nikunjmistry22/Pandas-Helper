@@ -3,3 +3,5 @@ pandas>=1.3.3
 openpyxl>=3.0.9
 gunicorn==20.1.0
 matplotlib==3.4.3
+lxml==4.6.3
+pyarrow==5.0.0
