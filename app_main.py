@@ -1,12 +1,13 @@
-from flask import Flask, render_template,request,jsonify,Markup
+from flask import Flask, render_template,request,jsonify,Markup,session
 import pandas as pd
 import openpyxl,secrets
 import matplotlib,json
 matplotlib.use('agg')
 import matplotlib.pyplot as plt
 from io import StringIO,BytesIO
-import base64
-import warnings
+import base64,warnings
+# from captcha.image import ImageCaptcha
+# import random,string
 warnings.filterwarnings("ignore")
 app = Flask(__name__)
 
@@ -14,9 +15,15 @@ secret_key = secrets.token_urlsafe(16)
 # Set the secret key for the Flask app
 app.config['SECRET_KEY'] = secret_key
 logs=f"import pandas as pd\nimport matplotlib\nmatplotlib.use('tkagg')\nimport matplotlib.pyplot as plt\n"
-dataframes = {}
+
 @app.route('/')
 def index():
+    global df, original, new_df, logs
+    # Reset all other values to None when accessing the '/' route
+    df = None
+    original = None
+    new_df = None
+    show_clear_logs()
     return render_template('index.html')
 
 @app.route('/upload', methods=['POST'])
